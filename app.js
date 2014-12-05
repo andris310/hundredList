@@ -1,14 +1,18 @@
 var express = require('express');
+var app = express();
+
+var jade = require('jade');
+var stylus = require('stylus');
+
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var staticRt = require('./routes/staticRt');
+var userRt = require('./routes/usersRt');
 
-var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,8 +26,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+app.use('/', staticRt);
+app.use('/users', userRt);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
