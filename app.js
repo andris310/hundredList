@@ -13,6 +13,7 @@ var bodyParser = require('body-parser');
 var itemRt = require('./routes/itemRt');
 var staticRt = require('./routes/staticRt');
 var usersRt = require('./routes/usersRt');
+var collectionRt = require('./routes/collectionRt');
 
 
 // view engine setup
@@ -37,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', staticRt);
 app.use('/', usersRt);
 app.use('/', itemRt);
+app.use('/', collectionRt);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

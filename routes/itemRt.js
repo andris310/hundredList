@@ -10,7 +10,7 @@ router.get('/items', function(req, res) {
       return;
     }
 
-    res.render('/items', {
+    res.render('items', {
       title: 'Items',
       alias: 'items',
       items: items
@@ -22,6 +22,27 @@ router.get('/new-item', function(req, res) {
   res.render('new_item', {
     title: 'Create New Item',
     alias: 'new_item'
+  });
+});
+
+// Crete new furniture
+router.post('/create-item', function(req, res) {
+  // if (!req.user) {
+  //   res.redirect(307, '/');
+  // }
+
+  var item = new Item();
+
+  item.name = req.body.name;
+
+  item.save(function(err) {
+    if (err) {
+      res.send('There was a problem adding information to the database.');
+      return;
+    }
+
+    res.location('items');
+    res.redirect('items');
   });
 });
 

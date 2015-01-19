@@ -1,1 +1,6 @@
-h1 Items
+extends layout
+
+block content
+  h1 All Items
+  for item in items
+    div #{item.name}

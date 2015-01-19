@@ -2,7 +2,7 @@ extends layout
 
 block content
   h1= title
-  form(name='addItem', method='post', action=item ? '/update-item/' + item._id : '/add-item').new-form
+  form(name='addItem', method='post', action=item ? '/update-item/' + item._id : '/create-item').new-form
     ul
       li
         label(for='name') Name
