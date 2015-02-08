@@ -1,4 +1,4 @@
-extends layout
+extends ../layout.jade
 
 block content
   h1= title
@@ -7,5 +7,8 @@ block content
       li
         label(for='name') Name
         input(type='text', id='name', name='name', value=item && item.name ? item.name : '')
+      li
+        label(for='collectionId') Collection ID
+        select(type='text', id='collectionId', name='collectionId', value=item && item.collectionId ? item.collectionId : '')
 
     button(type='submit') Save

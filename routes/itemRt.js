@@ -1,16 +1,16 @@
 var express = require('express');
+var async = require('async');
 var router = express.Router();
-var Item = require('../models/itemMdl');
-require('../hb_modules/connection').db();
+var itemCtl = require('../controllers/item-controller');
 
 router.get('/items', function(req, res) {
-  Item.find(function(err, items) {
+  itemCtl.getAllItems(function(err, items) {
     if (err) {
       res.send(err);
       return;
     }
 
-    res.render('items', {
+    res.render('item/items', {
       title: 'Items',
       alias: 'items',
       items: items
@@ -19,7 +19,7 @@ router.get('/items', function(req, res) {
 });
 
 router.get('/new-item', function(req, res) {
-  res.render('new_item', {
+  res.render('item/new_item', {
     title: 'Create New Item',
     alias: 'new_item'
   });
@@ -30,14 +30,9 @@ router.post('/create-item', function(req, res) {
   // if (!req.user) {
   //   res.redirect(307, '/');
   // }
-
-  var item = new Item();
-
-  item.name = req.body.name;
-
-  item.save(function(err) {
+  itemCtl.createNewItem(req.body.name, function(err, item) {
     if (err) {
-      res.send('There was a problem adding information to the database.');
+      res.send(err);
       return;
     }
 
