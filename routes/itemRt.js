@@ -2,6 +2,7 @@ var express = require('express');
 var async = require('async');
 var router = express.Router();
 var itemCtl = require('../controllers/item-controller');
+var listCtl = require('../controllers/list-controller');
 
 router.get('/items', function(req, res) {
   itemCtl.getAllItems(function(err, items) {
@@ -19,25 +20,16 @@ router.get('/items', function(req, res) {
 });
 
 router.get('/new-item', function(req, res) {
-  res.render('item/new_item', {
-    title: 'Create New Item',
-    alias: 'new_item'
-  });
-});
-
-// Crete new furniture
-router.post('/create-item', function(req, res) {
-  // if (!req.user) {
-  //   res.redirect(307, '/');
-  // }
-  itemCtl.createNewItem(req.body.name, function(err, item) {
+  listCtl.getAllLists(function(err, lists) {
     if (err) {
       res.send(err);
       return;
     }
-
-    res.location('items');
-    res.redirect('items');
+    res.render('item/new_item', {
+      title: 'Create New Item',
+      alias: 'new_item',
+      lists: lists
+    });
   });
 });
 

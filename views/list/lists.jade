@@ -1,0 +1,6 @@
+extends ../layout.jade
+
+block content
+  h1 All Lists
+  for list in lists
+    a(href='/list/#{list.url}') #{list.name}

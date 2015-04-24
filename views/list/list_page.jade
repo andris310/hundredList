@@ -1,0 +1,16 @@
+extends ../layout.jade
+
+block content
+  h1 {{list.name}}
+  div(ng-repeat='item in list.items') {{item.name}}
+
+  a(href='', ng-hide='openAddItem', ng-click='openAddItem = openAddItem ? false : true') Add New Item
+
+  .add-item(ng-show='openAddItem')
+    form(name='newItemForm', ng-submit='addItemToList()')
+      label(for='name') Name:
+      input(type='text', ng-model='newItem.name', name='name')
+      button(type='submit') Add Item
+
+  script.
+    var list = !{JSON.stringify(list)}

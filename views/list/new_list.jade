@@ -1,0 +1,14 @@
+extends ../layout.jade
+
+block content
+  h1= title
+  form(name='addList', method='post', action=list ? '/update-list/' + list._id : '/api/create-list').new-form
+    ul
+      li
+        label(for='name') Name
+        input(type='text', id='name', name='name', value=list && list.name ? list.name : '')
+      li
+        lable(for='ulr') Url
+        input(type='text', id='url', url='url', value=list && list.url ? list.url : '')
+
+    button(type='submit') Save
