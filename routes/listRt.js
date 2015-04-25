@@ -4,17 +4,9 @@ var List = require('../models/listMdl');
 require('../hb_modules/connection').db();
 
 router.get('/all-lists', function(req, res) {
-  List.find(function(err, lists) {
-    if (err) {
-      res.send(err);
-      return;
-    }
-
-    res.render('list/lists', {
-      title: 'All lists',
-      alias: 'lists',
-      lists: lists
-    });
+  res.render('list/lists', {
+    title: 'All lists',
+    alias: 'lists'
   });
 });
 

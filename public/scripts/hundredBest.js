@@ -3,8 +3,13 @@ angular.module('hundredBest', [
   'hbServices'
 ])
 
-.controller('mainCtl', ['$scope', function($scope) {
+.controller('mainCtl', ['$scope', 'listSvc', function($scope, listSvc) {
   $scope.title = 'Hundred Best';
   $scope.selectedList = '';
-  console.log('lists on scope', $scope.lists)
+  $scope.searchAm = function() {
+    console.log('searhcing.....')
+    if ($scope.searchParam) {
+      console.log($scope.searchParam);
+    }
+  }
 }])

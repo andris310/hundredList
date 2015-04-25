@@ -57,8 +57,20 @@ router.post('/getListInfo', function(req, res) {
   listCtl.getListInfo(req.body.listId, function(err, result) {
     if (err) {
       res.send(err);
+      return;
     }
     console.log('REsult in router', result);
+    res.json(result);
+  });
+});
+
+router.post('/getAllLists', function(req, res) {
+  listCtl.getAllLists(function(err, result) {
+    if (err) {
+      res.send(err);
+      return;
+    }
+    console.log(result);
     res.json(result);
   });
 });

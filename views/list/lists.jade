@@ -1,6 +1,7 @@
 extends ../layout.jade
 
 block content
-  h1 All Lists
-  for list in lists
-    a(href='/list/#{list.url}') #{list.name}
+  div(ng-controller='listsCtl')
+    h1 All Lists
+    .list(ng-repeat='list in allLists')
+      a(href='/list/{{list.url}}') {{list.name}}
