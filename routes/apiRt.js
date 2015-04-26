@@ -6,6 +6,7 @@ require('../hb_modules/connection').db();
 
 var itemCtl = require('../controllers/item-controller');
 var listCtl = require('../controllers/list-controller');
+var searchCtl = require('../controllers/search-controller');
 
 router.get('/', function(req, res) {
   res.json({ message: 'hooray! welcome to our api!' });
@@ -67,10 +68,25 @@ router.post('/getListInfo', function(req, res) {
 router.post('/getAllLists', function(req, res) {
   listCtl.getAllLists(function(err, result) {
     if (err) {
-      res.send(err);
+      res.status(500);
+      res.json(err.Error[0]);
       return;
     }
     console.log(result);
+    res.json(result);
+  });
+});
+
+router.get('/searchAmBooks', function(req, res) {
+  searchCtl.searchAmBooks(req.query.searchParam, function(err, result) {
+    if (err) {
+      console.log('inside ERR on api:')
+      res.status(500);
+      res.json(err);
+      return;
+    }
+
+    console.log('AM results: ', result);
     res.json(result);
   });
 });

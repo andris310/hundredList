@@ -16,4 +16,8 @@ router.get('/about', function(req, res) {
   });
 });
 
+router.get('/directives/:name', function(req, res) {
+  res.render('directives/' + req.params.name);
+});
+
 module.exports = router;

@@ -1,0 +1,14 @@
+.am-search
+  form(name='amSearchForm', ng-submit='searchAmBooks()')
+      label(name='search') Search
+      input(type='text', ng-model='searchParam')
+      button(type='submit') Search
+
+    p {{searchParam}}
+
+    .search-item(ng-repeat='item in searchResults')
+      .cover
+        img(ng-src='{{item.SmallImage[0].URL[0]}}')
+      .info
+        .title {{item.ItemAttributes[0].Title[0]}}
+

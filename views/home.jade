@@ -3,9 +3,4 @@ extends layout
 block content
   //- h1= title
   //- p Welcome to #{title}
-  form(name='amSearchForm', ng-submit='searchAm()')
-    label(name='search') Search
-    input(type='text', ng-model='searchParam')
-    button(type='submit') Search
-
-  p {{searchParam}}
+  am-search

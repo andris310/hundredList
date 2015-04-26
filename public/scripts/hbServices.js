@@ -7,3 +7,9 @@ angular.module('hbServices', ['ngResource'])
     getAllLists: { method: 'POST', url: '/api/getAllLists', isArray: true }
   });
 }])
+
+.factory('searchSvc', ['$resource', function($resource) {
+  return $resource('/api', {}, {
+    searchAmBooks: { method: 'GET', url: '/api/searchAmBooks', isArray: true }
+  });
+}])

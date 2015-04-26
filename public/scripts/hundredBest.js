@@ -1,15 +1,12 @@
 angular.module('hundredBest', [
   'ngResource',
-  'hbServices'
+  'ngRoute',
+  'hbServices',
+  'hbDirectives'
 ])
 
-.controller('mainCtl', ['$scope', 'listSvc', function($scope, listSvc) {
+.controller('mainCtl', ['$scope', 'listSvc', 'searchSvc', function($scope, listSvc, searchSvc) {
   $scope.title = 'Hundred Best';
   $scope.selectedList = '';
-  $scope.searchAm = function() {
-    console.log('searhcing.....')
-    if ($scope.searchParam) {
-      console.log($scope.searchParam);
-    }
-  }
+
 }])
