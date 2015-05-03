@@ -1,3 +1,22 @@
+html {
+  font-family: 'Lato' sans-serif;
+}
+ul {
+  list-style: none;
+  padding-left: 0px;
+}
+.loader {
+  width: 40px;
+  opacity: 0.2;
+  display: block;
+  margin: 0 auto;
+}
+#menu ul li {
+  display: inline;
+}
+#menu ul li a {
+  padding: 7px;
+}
 .am-search {
   width: 100%;
   margin: auto;
@@ -53,16 +72,10 @@
   margin-top: 3px;
   font-weight: 300;
 }
-html {
-  font-family: 'Lato' sans-serif;
+.am-search .selected-item .search-item {
+  margin-bottom: 15px;
+  border: 2px solid #63beff;
 }
-ul {
-  list-style: none;
-  padding-left: 0px;
-}
-#menu ul li {
-  display: inline;
-}
-#menu ul li a {
-  padding: 7px;
+.am-search .selected-item button {
+  float: right;
 }

@@ -3,8 +3,9 @@ html(lang="en" ng-app='hundredBest')
   head
     title {{title}}
     meta(name='description', content='#{metaDescription}')
+    link(rel='stylesheet', href='/styles/base.css', type='text/css')
     link(rel='stylesheet', href='/styles/#{alias}.css', type='text/css')
-    link(href='http://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900', rel='stylesheet', type='text/css')
+    link(href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900' rel='stylesheet' type='text/css')
 
   body(ng-controller='mainCtl')
     header.wrap.header

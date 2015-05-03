@@ -1,17 +1,20 @@
 angular.module('hundredBest')
 
 .controller('listCtl', ['$scope', 'listSvc', function($scope, listSvc) {
-  console.log('inside listCtl')
-  $scope.list = list;
+  console.log('inside listCtl');
+  $scope.selectedList = list;
+  $scope.selectedItem = {};
   $scope.newItem = {};
   $scope.openAddItem = false;
 
+  console.log($scope.selectedList);
+
   $scope.addItemToList = function() {
     console.log('adding item to the list: ', $scope.newItem);
-    console.log('list: ', $scope.list);
+    console.log('list: ', $scope.selectedList);
     var payload = {
       name: $scope.newItem.name,
-      listId: $scope.list._id
+      listId: $scope.selectedList._id
     };
 
     listSvc.addItemToList(payload, function(res) {
@@ -24,12 +27,12 @@ angular.module('hundredBest')
 
   $scope.getListInfo = function() {
     var payload = {
-      listId: $scope.list._id
+      listId: $scope.selectedList._id
     };
 
     listSvc.getListInfo(payload, function(list) {
-      $scope.list = list;
-      console.log('Updated list: ', $scope.list);
+      $scope.selectedList = list;
+      console.log('Updated list: ', $scope.selectedList);
     });
   };
 }])

@@ -1,0 +1,62 @@
+.am-search
+  width 100%
+  margin auto
+  max-width 600px
+  box-sizing border-box
+
+  form
+    margin-bottom 10px
+
+  input
+    width 83%
+    height 35px
+    font-size 16px
+    padding-left 7px
+    box-sizing border-box
+
+  button
+    width 17%
+    height 35px
+    min-width 45px
+    line-height 33px
+
+  .search-item
+    width 100%
+    padding 4px
+    margin-bottom 2px
+    box-sizing border-box
+
+    &:hover
+      cursor pointer
+      background-color #F5F5F5
+
+    > div
+      display inline-block
+
+    .cover
+      width 50px
+      height 75px
+
+      img
+        width 100%
+
+    .info
+      width 77%
+      margin-left 12px
+      vertical-align top
+
+      .title
+        font-size 16px
+
+      .author
+        font-size 11px
+        margin-top 3px
+        font-weight 300
+
+  .selected-item
+    .search-item
+      margin-bottom 15px
+      border 2px solid primary-color
+
+    button
+      float right

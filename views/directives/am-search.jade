@@ -1,14 +1,24 @@
 .am-search
   form(name='amSearchForm', ng-submit='searchAmBooks()')
-      label(name='search') Search
-      input(type='text', ng-model='searchParam')
-      button(type='submit') Search
+    input(type='text', ng-model='searchParam')
+    button(type='submit') Search
 
-    p {{searchParam}}
+  img(ng-show='searching', src='/images/loading.gif').loader
+  .search-item(ng-hide='newItem.title || searching', ng-repeat='item in searchResults', ng-click='setSelectedItem(item)')
+    .cover
+      img(ng-src='{{item.smallImage}}')
+    .info
+      .title {{item.title}}
+      .author by {{item.author}}
 
-    .search-item(ng-repeat='item in searchResults')
+  .selected-item(ng-show='newItem.title')
+    .search-item
       .cover
-        img(ng-src='{{item.SmallImage[0].URL[0]}}')
+        img(ng-src='{{newItem.smallImage}}')
       .info
-        .title {{item.ItemAttributes[0].Title[0]}}
+        .title {{newItem.title}}
+        .author by {{newItem.author}}
+    button(ng-click='addItemToList()') Add Item
+
+
 

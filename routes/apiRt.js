@@ -18,11 +18,13 @@ router.post('/create-list', function(req, res) {
   //   res.redirect(307, '/');
   // }
   var list = new List();
+
   list.name = req.body.name;
   list.url = req.body.url;
 
   list.save(function(err) {
     if (err) {
+      res.status(500);
       res.send('There was a problem adding information to the database.');
       return;
     }
@@ -87,9 +89,29 @@ router.get('/searchAmBooks', function(req, res) {
     }
 
     console.log('AM results: ', result);
-    res.json(result);
+    var books = processAmBooks(result);
+    res.json(books);
   });
 });
+
+function processAmBooks(books) {
+  var processed = [];
+  for(var i = 0; i < books.length; i++) {
+    console.log(books[i]);
+    var book = {};
+
+    book.title = books[i].ItemAttributes[0].Title[0];
+    book.author = books[i].ItemAttributes[0].Author[0];
+    book.isbn = books[i].ItemAttributes[0].ISBN[0];
+    book.smallImage = books[i].SmallImage[0].URL[0];
+    book.largeImage = books[i].LargeImage[0].URL[0];
+    book.detailPageUrl = books[i].DetailPageURL[0];
+
+    processed.push(book);
+  }
+
+  return processed;
+}
 
 
 module.exports = router;

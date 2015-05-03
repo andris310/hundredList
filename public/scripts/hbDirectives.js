@@ -4,20 +4,33 @@ angular.module('hbDirectives', ['hbServices'])
   return{
     restrict: 'E',
     templateUrl: '/directives/am-search',
+    replace: true,
+    scope: {
+      list: '=',
+      newItem: '='
+    },
     link: function(scope, element, attr, ctrl) {
+      scope.searching = false;
       scope.searchResults = [];
 
       scope.searchAmBooks = function() {
-        console.log('searhcing.....')
+        scope.searching = true;
+        scope.newItem = {};
         if (scope.searchParam) {
           console.log(scope.searchParam);
           searchSvc.searchAmBooks({searchParam: scope.searchParam}, function(res) {
             console.log('RESULT: ', res);
             scope.searchResults = res;
+            scope.searching = false;
           }, function(err) {
+            scope.searching = false;
             console.log('ERR: ', err);
           });
         }
+      };
+
+      scope.setSelectedItem = function(item) {
+        scope.newItem = item;
       };
     }
   };
