@@ -3,5 +3,5 @@ extends ../layout.jade
 block content
   div(ng-controller='listsCtl')
     h1 All Lists
-    .list(ng-repeat='list in allLists')
+    .list(ng-repeat='list in allLists', ng-if='list.url')
       a(href='/list/{{list.url}}') {{list.name}}

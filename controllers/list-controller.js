@@ -16,7 +16,6 @@ function getAllLists(callback) {
 }
 
 function getListInfo(listId, callback) {
-  console.log('getListInfo: body: ', listId);
   List.findOne({_id: listId}).populate('items').exec(function(err, result) {
     if (err) {
       return callback(err);

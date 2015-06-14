@@ -30,6 +30,7 @@ angular.module('hbDirectives', ['hbServices'])
       };
 
       scope.setSelectedItem = function(item) {
+        console.log('set selected item: ', item)
         scope.newItem = item;
       };
     }

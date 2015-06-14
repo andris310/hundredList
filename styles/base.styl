@@ -3,13 +3,35 @@
 html
   font-family 'Lato' sans-serif
 
+[ng\:cloak]
+[ng-cloak]
+.ng-cloak
+  display none !important
+
 ul
   list-style none
   padding-left 0px
 
+a
+  color inherit
+  text-decoration none
+
+button
+  color #fff
+  height 35px
+  border none
+  cursor pointer
+  font-size 15px
+  line-height 32px
+  background-color primary-color
+
+input:focus
+  outline none
+  border 1px solid primary-color
+
 .loader
   width 40px
-  opacity 0.2
+  opacity(20)
   display block
   margin 0 auto
 
@@ -20,6 +42,163 @@ ul
 
       a
         padding 7px
+
+.md-wrap
+  width 600px
+  margin 0 auto
+
+
+.list-item
+  width 100%
+  padding 4px
+  margin-bottom 2px
+  box-sizing border-box
+
+  &:hover
+    background-color #F5F5F5
+
+  > div
+    vertical-align top
+    display inline-block
+
+  .rank
+    width 50px
+    font-size 2em
+    margin-top 15px
+    text-align center
+    vertical-align top
+
+  .cover
+    width 50px
+    height 75px
+
+    img
+      width 100%
+
+  .info
+    width 77%
+    cursor pointer
+    margin-left 12px
+    vertical-align top
+
+    .title
+      font-size 1.4em
+      padding-top 10px
+
+    .author
+      font-size 11px
+      margin-top 3px
+      font-weight 300
+
+  .votes
+    .vote-count
+      padding 7px
+      display block
+      font-size 24px
+      font-weight 300
+      color primary-color
+
+  .upvote
+    padding 15px 2px
+
+    &:hover
+      cursor pointer
+
+      .arrow-up
+        border-bottom 13px solid green
+
+  .arrow-up
+    width 0
+    height 0
+    border-bottom 13px solid #b8b8b8
+    border-left 10px solid transparent
+    border-right 10px solid transparent
+
+.notify-box
+  top 0
+  left 0
+  right 0
+  width 100%
+  z-index 99999
+  position fixed
+
+  .notifications
+    top 0px
+    width inherit
+    position absolute
+
+    .message
+      top 0px
+      left 0px
+      opacity(90)
+      width inherit
+      position relative
+      background-color #fff
+      box-sizing border-box
+
+      &.first-of-type
+        border-top none
+
+      &.error
+        color #DA3232
+        border-bottom 3px solid #DA3232
+
+      &.success
+        color #1BB303
+        border-bottom 3px solid #1BB303
+
+      &.warn
+        color #FF9100
+        border-bottom 3px solid #FF9100
+
+      &.info
+        color primary-color
+        border-bottom 3px solid primary-color
+
+      &.ng-leave
+        transition all linear 0.4s
+        -webkit-transition all linear 0.4s
+        opacity(90)
+        max-height 100px
+        min-height 28px
+        overflow hidden
+
+      &.ng-leave-active
+        opacity(30)
+        max-height 1px
+        min-height 1px
+        overflow hidden
+
+      &.ng-enter
+        transition all linear 0.3s
+        -webkit-transition all linear 0.3s
+        opacity(10)
+        max-height 1px
+        min-height 1px
+        overflow hidden
+
+      &.ng-enter-active
+        opacity(100)
+        max-height 100px
+        min-height 28px
+        overflow hidden
+
+      .msg-txt
+        font-size 20px
+        max-width 1100px
+        margin-left auto
+        padding 20px 30px
+        text-align center
+        margin-right auto
+
+      .close-notification
+        top 50%
+        right 12px
+        padding 4px
+        font-size 18px
+        cursor pointer
+        position absolute
+        transform translateY(-50%)
 
 
 @import 'directives'

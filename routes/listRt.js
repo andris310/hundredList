@@ -19,7 +19,7 @@ router.get('/new-list', function(req, res) {
 
 router.get('/list/:list_url', function(req, res) {
   List.findOne({url: req.params.list_url}).populate('items').exec(function(err, result) {
-    console.log('result', result);
+    console.log('&&&result', result);
     res.render('list/list_page', {
       alias: 'list_page',
       ctl: 'listCtl',

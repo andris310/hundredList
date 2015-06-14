@@ -39,14 +39,13 @@ router.post('/add-item', function(req, res) {
   // if (!req.user) {
   //   res.redirect(307, '/');
   // }
-  var payload = {
-    name: req.body.name,
-    listId: req.body.listId
-  };
-  console.log(payload);
 
-  itemCtl.createNewItem(req.body.name, req.body.listId, function(err, result) {
+  console.log('req.body', req.body);
+
+  itemCtl.createNewItem(req.body, function(err, result) {
     if (err) {
+      res.status(500);
+      console.log('ERR: ', err);
       res.send(err);
       return;
     }
@@ -58,7 +57,10 @@ router.post('/add-item', function(req, res) {
 router.post('/getListInfo', function(req, res) {
   console.log('/getListInfo: req.body: ', req.body);
   listCtl.getListInfo(req.body.listId, function(err, result) {
+    console.log(err);
     if (err) {
+      res.status(500);
+      console.log('ERROR: ', err);
       res.send(err);
       return;
     }
@@ -74,7 +76,7 @@ router.post('/getAllLists', function(req, res) {
       res.json(err.Error[0]);
       return;
     }
-    console.log(result);
+    console.log('LIST::::', result);
     res.json(result);
   });
 });
@@ -88,30 +90,20 @@ router.get('/searchAmBooks', function(req, res) {
       return;
     }
 
-    console.log('AM results: ', result);
-    var books = processAmBooks(result);
-    res.json(books);
+    res.json(result);
   });
 });
 
-function processAmBooks(books) {
-  var processed = [];
-  for(var i = 0; i < books.length; i++) {
-    console.log(books[i]);
-    var book = {};
+router.post('/upvote', function(req, res) {
+  itemCtl.upvote(req.body, function(err, result) {
+    if (err) {
+      res.status(500);
+      res.json(err);
+      return;
+    }
 
-    book.title = books[i].ItemAttributes[0].Title[0];
-    book.author = books[i].ItemAttributes[0].Author[0];
-    book.isbn = books[i].ItemAttributes[0].ISBN[0];
-    book.smallImage = books[i].SmallImage[0].URL[0];
-    book.largeImage = books[i].LargeImage[0].URL[0];
-    book.detailPageUrl = books[i].DetailPageURL[0];
-
-    processed.push(book);
-  }
-
-  return processed;
-}
-
+    res.json(result);
+  });
+});
 
 module.exports = router;

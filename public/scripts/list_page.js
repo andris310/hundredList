@@ -10,10 +10,15 @@ angular.module('hundredBest')
   console.log($scope.selectedList);
 
   $scope.addItemToList = function() {
-    console.log('adding item to the list: ', $scope.newItem);
+    console.log('adding item to the list: ', $scope.selectedItem);
     console.log('list: ', $scope.selectedList);
     var payload = {
-      name: $scope.newItem.name,
+      title: $scope.selectedItem.title,
+      author: $scope.selectedItem.author,
+      detailPageUrl: $scope.selectedItem.detailPageUrl,
+      isbn: $scope.selectedItem.isbn,
+      largeImage: $scope.selectedItem.largeImage,
+      smallImage: $scope.selectedItem.smallImage,
       listId: $scope.selectedList._id
     };
 
@@ -22,8 +27,30 @@ angular.module('hundredBest')
       $scope.openAddItem = false;
       $scope.newItem = {};
       $scope.getListInfo();
+    }, function(err) {
+      if (err.data.msg) {
+        $scope.notify('warn', err.data.msg);
+      }
+      console.log('ERROR: ', err);
     });
   };
+
+  $scope.upvote = function(item) {
+    console.log('Upvote: ', item);
+    var payload = {
+      itemId: item._id
+    };
+
+    listSvc.upvote(payload, function(res) {
+      console.log('res: ', res);
+    }, function(err) {
+      if (err.data.msg) {
+        $scope.notify('warn', err.data.msg);
+        return;
+      }
+      $scope.notify('error', 'Sorry, something went wrong.');
+    });
+  }
 
   $scope.getListInfo = function() {
     var payload = {

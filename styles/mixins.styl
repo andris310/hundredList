@@ -1,1 +1,19 @@
 primary-color = #63BEFF
+
+opacity(op = 100)
+  filter 'alpha(opacity=' + op + ')'
+  -moz-opacity (op/100)
+  -khtml-opacity (op/100)
+  opacity (op/100)
+
+transition()
+  -webkit-transition arguments
+  -moz-transition arguments
+  -ms-transition arguments
+  -o-transition arguments
+  transition arguments
+
+transform()
+  -webkit-transform arguments
+  -ms-transform arguments
+  transform arguments

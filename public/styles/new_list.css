@@ -1,3 +1,72 @@
+html {
+  font-family: 'Lato' sans-serif;
+}
+ul {
+  list-style: none;
+  padding-left: 0px;
+}
+button {
+  color: #fff;
+  height: 35px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 32px;
+  background-color: #63beff;
+}
+input:focus {
+  outline: none;
+  border: 1px solid #63beff;
+}
+.loader {
+  width: 40px;
+  opacity: 0.2;
+  display: block;
+  margin: 0 auto;
+}
+#menu ul li {
+  display: inline;
+}
+#menu ul li a {
+  padding: 7px;
+}
+.md-wrap {
+  width: 600px;
+  margin: 0 auto;
+}
+.list-item {
+  width: 100%;
+  padding: 4px;
+  margin-bottom: 2px;
+  box-sizing: border-box;
+}
+.list-item:hover {
+  cursor: pointer;
+  background-color: #f5f5f5;
+}
+.list-item > div {
+  display: inline-block;
+}
+.list-item .cover {
+  width: 50px;
+  height: 75px;
+}
+.list-item .cover img {
+  width: 100%;
+}
+.list-item .info {
+  width: 77%;
+  margin-left: 12px;
+  vertical-align: top;
+}
+.list-item .info .title {
+  font-size: 16px;
+}
+.list-item .info .author {
+  font-size: 11px;
+  margin-top: 3px;
+  font-weight: 300;
+}
 .am-search {
   width: 100%;
   margin: auto;
@@ -18,7 +87,6 @@
   width: 17%;
   height: 35px;
   min-width: 45px;
-  line-height: 33px;
 }
 .am-search .search-item {
   width: 100%;
@@ -53,16 +121,10 @@
   margin-top: 3px;
   font-weight: 300;
 }
-html {
-  font-family: 'Lato' sans-serif;
+.am-search .selected-item .search-item {
+  margin-bottom: 15px;
+  border: 2px solid #63beff;
 }
-ul {
-  list-style: none;
-  padding-left: 0px;
-}
-#menu ul li {
-  display: inline;
-}
-#menu ul li a {
-  padding: 7px;
+.am-search .selected-item button {
+  float: right;
 }
