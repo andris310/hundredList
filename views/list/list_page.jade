@@ -1,25 +1,7 @@
 extends ../layout.jade
 
 block content
-  .list-container(ng-cloak)
-    h1.list-title {{selectedList.name}}
-    .list-item(ng-repeat='item in selectedList.items | orderBy: "-votes.length"', ng-show='item.title')
-      .rank {{$index + 1}}
-      .cover
-        img(ng-src='{{item.smallImage}}')
-      .info
-        a(ng-href='{{item.detailPageUrl}}', target='_blank').title {{item.title}}
-        .author by {{item.author}}
-      .votes
-        span(title='Votes').vote-count {{item.votes.length}}
-      .upvote(ng-click='upvote(item)')
-        .arrow-up
-
-    a(href='', ng-hide='openAddItem', ng-click='openAddItem = openAddItem ? false : true') Add New Item
-
-    .add-item(ng-show='openAddItem').md-wrap
-      am-search(list='selectedList', new-item='selectedItem')
-      button(ng-show='selectedItem.title', ng-click='addItemToList()') Add Item
+  include ../partials/list-partial.jade
 
   script.
     var list = !{JSON.stringify(list)}

@@ -9,8 +9,6 @@ var client = amazon.createClient({
 exports.searchAmBooks = searchAmBooks;
 
 function searchAmBooks(searchParam, callback) {
-  console.log('inside searchAmBooks, SEARCHING FOR : ', searchParam);
-
   client.itemSearch({
     keywords: searchParam,
     searchIndex: 'Books',
@@ -36,6 +34,7 @@ function processAmBooks(books) {
     processedBook.smallImage = book.SmallImage.URL;
     processedBook.largeImage = book.LargeImage.URL;
     processedBook.detailPageUrl = book.DetailPageURL;
+    processedBook.itemType = 'book';
 
     processedBook.isbn = book.ItemAttributes.ISBN || book.ItemAttributes.EISBN
 

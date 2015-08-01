@@ -30,8 +30,11 @@ angular.module('hbDirectives', ['hbServices'])
       };
 
       scope.setSelectedItem = function(item) {
+        console.log('element', element);
         console.log('set selected item: ', item)
         scope.newItem = item;
+        scope.searchParam = '';
+        scope.searchResults = [];
       };
     }
   };

@@ -21,13 +21,15 @@ function getAllItems(callback) {
 }
 
 function createNewItem(params, callback) {
+  console.log('params: ', params)
   var item = new Item({
     title: params.title,
     author: params.author,
     detailPageUrl: params.detailPageUrl,
     isbn: params.isbn,
     largeImage: params.largeImage,
-    smallImage: params.smallImage
+    smallImage: params.smallImage,
+    itemType: params.itemType
   });
 
   var list;
@@ -41,13 +43,11 @@ function createNewItem(params, callback) {
     item.save(function(err, item) {
       if (err) {
         var error = HBError.process(err);
-        console.log('itemCtl ERRir: ', error);
-        return callback(err);
+        return callback(error);
       }
 
       list.items.push(item);
       list.save(function(err, res) {
-        console.log('RES inside createItem: ', res)
         callback(null, {message: 'Item Added to the list'});
       });
     });
@@ -55,24 +55,31 @@ function createNewItem(params, callback) {
 }
 
 function upvote(params, callback) {
-  var vote = new Vote();
-  console.log('upvote', params.itemId);
   Item.findOne({_id: params.itemId}, function(err, item) {
     if (err) {
       var error = HBError.process(err);
-      console.log('itemCtl ERR: ', err);
       return callback(err);
     }
 
+    var type = item.itemType ? item.itemType : 'item';
+    var vote = new Vote({userId: params.userId, itemId: item._id});
     vote.save(function(err, vote) {
       if (err) {
-        return callback(HBError.process(err));
+        var error = HBError.process(err);
+        if (err.status == 409) {
+          err.msg = 'You can upvote same ' + type + ' only once.';
+        }
+
+        return callback(error);
       }
 
       item.votes.push(vote);
       item.save(function(err, res) {
-        console.log('RES inside item.save with vote: ', res)
-        callback(null, {message: 'Vote added to the item'})
+        if (err) {
+          return callback(err);
+        }
+
+        callback(null, {message: 'Vote added to the ' + type});
       });
     });
   });

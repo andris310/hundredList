@@ -1,6 +1,7 @@
 doctype html
 html(lang="en" ng-app='hundredBest')
   head
+    base(href='/')
     title {{title}}
     meta(name='description', content='#{metaDescription}')
     link(rel='stylesheet', href='/styles/base.css', type='text/css')
@@ -8,6 +9,23 @@ html(lang="en" ng-app='hundredBest')
     link(href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900' rel='stylesheet' type='text/css')
 
   body(ng-controller='mainCtl', ng-cloak)
+    script.
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : process.env.FB_APP_ID,
+          xfbml      : true,
+          version    : 'v2.3'
+        });
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    div#fb-root
     .notify-box
       .notifications
         .message(ng-repeat="msg in notifications", ng-class="[msg.class]")
@@ -15,22 +33,30 @@ html(lang="en" ng-app='hundredBest')
           .close-notification(ng-click="removeNotification(msg.id)") &times;
 
     header.wrap.header
+      .login-box(ng-class='{"show-login-box": showLogin}')
+        a(href="/auth/facebook", target='_self').login-with-fb Login with Facebook
+          img(src='/images/faceb.svg')
+      if (!user)
+        .login
+          a(href='', ng-click='showLogin = !showLogin; showVeil = true') Login
       if (user)
         .login
           span #{user.username}
-          a(href="/logout") Logout
+          a(href="/logout", target='_self') Logout
 
       //- #logo Hundred Best Lists
-      #menu
-        ul
-          li
-            a(href='/') Home
-          li
-            a(href='/') list
-          li
-            a(href='/all-lists') All lists
+      //- #menu
+      //-   ul
+      //-     li
+      //-       a(href='/', target='_self') Home
+      //-     li
+      //-       a(href='/', target='_self') list
+      //-     li
+      //-       a(href='/all-lists', target='_self') All lists
     #container.wrap(ng-controller=ctl)
       block content
+      //- div User: #{user}
+    #veil(ng-if='showVeil')
 
   block scripts
     script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
@@ -43,3 +69,8 @@ html(lang="en" ng-app='hundredBest')
     script(src='/scripts/hbServices.js')
     script(src='/scripts/hbDirectives.js')
     script(src='/scripts/#{alias}.js')
+    script.
+      if (window.location.hash && window.location.hash == '#_=_') {
+          window.location.hash = '';
+      }
+

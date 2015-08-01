@@ -14,9 +14,10 @@ router.get('/', function(req, res) {
 
 // Crete new List
 router.post('/create-list', function(req, res) {
-  // if (!req.user) {
-  //   res.redirect(307, '/');
-  // }
+  console.log('req inside create-list:', req);
+  if (!req.user) {
+    res.redirect(307, '/');
+  }
   var list = new List();
 
   list.name = req.body.name;
@@ -35,17 +36,16 @@ router.post('/create-list', function(req, res) {
 
 // Crete new item
 router.post('/add-item', function(req, res) {
-  console.log('inside api!!!!')
-  // if (!req.user) {
-  //   res.redirect(307, '/');
-  // }
-
-  console.log('req.body', req.body);
+  if (!req.user) {
+    res.status(401);
+    res.send({msg: 'You have to be logged in.'})
+    return;
+  }
 
   itemCtl.createNewItem(req.body, function(err, result) {
     if (err) {
-      res.status(500);
-      console.log('ERR: ', err);
+      console.log('api ERR: ', err.status);
+      err.status ? res.status(err.status) : res.status(500);
       res.send(err);
       return;
     }
@@ -55,16 +55,13 @@ router.post('/add-item', function(req, res) {
 });
 
 router.post('/getListInfo', function(req, res) {
-  console.log('/getListInfo: req.body: ', req.body);
   listCtl.getListInfo(req.body.listId, function(err, result) {
-    console.log(err);
     if (err) {
       res.status(500);
-      console.log('ERROR: ', err);
       res.send(err);
       return;
     }
-    console.log('REsult in router', result);
+
     res.json(result);
   });
 });
@@ -76,7 +73,7 @@ router.post('/getAllLists', function(req, res) {
       res.json(err.Error[0]);
       return;
     }
-    console.log('LIST::::', result);
+
     res.json(result);
   });
 });
@@ -84,7 +81,6 @@ router.post('/getAllLists', function(req, res) {
 router.get('/searchAmBooks', function(req, res) {
   searchCtl.searchAmBooks(req.query.searchParam, function(err, result) {
     if (err) {
-      console.log('inside ERR on api:')
       res.status(500);
       res.json(err);
       return;
@@ -95,10 +91,19 @@ router.get('/searchAmBooks', function(req, res) {
 });
 
 router.post('/upvote', function(req, res) {
+  if (!req.user) {
+    res.status(401);
+    res.send({msg: 'You have to log-in to upvote'});
+    return;
+  }
+
+  req.body.userId = req.user._id;
   itemCtl.upvote(req.body, function(err, result) {
     if (err) {
-      res.status(500);
-      res.json(err);
+      if (err.status == 409) {
+        err.status ? res.status(err.status) : res.status(500);
+      }
+      res.send(err);
       return;
     }
 

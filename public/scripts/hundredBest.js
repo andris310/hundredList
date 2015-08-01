@@ -6,10 +6,16 @@ angular.module('hundredBest', [
   'hbDirectives'
 ])
 
+.config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
+  $locationProvider.html5Mode(true);
+}])
+
 .controller('mainCtl', ['$scope', '$timeout', 'listSvc', 'searchSvc', function($scope, $timeout, listSvc, searchSvc) {
   $scope.title = 'Hundred Best';
+  $scope.showVeil = false;
   $scope.selectedList = '';
   $scope.notifications = [];
+  $scope.showLogin = false;
 
     /**
    * Global function for displaying notification.
@@ -25,6 +31,12 @@ angular.module('hundredBest', [
     }
 
     var noteId = notification_id++;
+    for (var i = 0; $scope.notifications.length > i; i++) {
+      if ($scope.notifications[i].message === message) {
+        return;
+      }
+    }
+
     $scope.notifications.push({
       id: noteId,
       class: type,
@@ -64,6 +76,77 @@ angular.module('hundredBest', [
       this.$apply(fn);
     }
   };
+}])
 
+.controller('listCtl', ['$scope', '$routeParams', '$location', 'listSvc', function($scope, $routeParams, $location, listSvc) {
+  console.log('inside listCtl');
+  $scope.selectedList = list;
+  $scope.selectedItem = {};
+  $scope.newItem = {};
+  $scope.openAddItem = false;
 
+  console.log($scope.selectedList);
+  $scope.itemType = $scope.selectedList.items[0].itemType;
+
+  $scope.getUserVotes = function() {
+    userSvc.getUserVotes
+  };
+
+  $scope.addItemToList = function() {
+    var payload = {
+      title: $scope.selectedItem.title,
+      author: $scope.selectedItem.author,
+      detailPageUrl: $scope.selectedItem.detailPageUrl,
+      isbn: $scope.selectedItem.isbn,
+      largeImage: $scope.selectedItem.largeImage,
+      smallImage: $scope.selectedItem.smallImage,
+      listId: $scope.selectedList._id,
+      itemType: $scope.selectedItem.itemType
+    };
+
+    listSvc.addItemToList(payload, function(res) {
+      $scope.openAddItem = false;
+      $scope.newItem = {};
+      $scope.selectedItem = {};
+      $scope.getListInfo();
+    }, function(err) {
+      if (err.data && err.data.msg) {
+        $scope.notify('warn', err.data.msg);
+        return;
+      }
+      console.log('ERROR: ', err);
+      $scope.notify('error', 'Sorry, there was an issue while adding to the list.');
+    });
+  };
+
+  $scope.upvote = function(item) {
+    console.log(item);
+    var payload = {
+      itemId: item._id
+    };
+
+    listSvc.upvote(payload, function(res) {
+      if (res.message) {
+        $scope.notify('info', res.message);
+      }
+      console.log('Upvote res: ', res);
+      $scope.getListInfo();
+    }, function(err) {
+      if (err.data && err.data.msg) {
+        $scope.notify('warn', err.data.msg);
+        return;
+      }
+      $scope.notify('error', 'Sorry, something went wrong.');
+    });
+  };
+
+  $scope.getListInfo = function() {
+    var payload = {
+      listId: $scope.selectedList._id
+    };
+
+    listSvc.getListInfo(payload, function(list) {
+      $scope.selectedList = list;
+    });
+  };
 }])

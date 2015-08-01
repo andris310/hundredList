@@ -20,7 +20,7 @@ function getListInfo(listId, callback) {
     if (err) {
       return callback(err);
     }
-    console.log('listInfo: ', result);
+
     callback(null, result);
   });
 }

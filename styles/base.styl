@@ -8,6 +8,9 @@ html
 .ng-cloak
   display none !important
 
+.header
+  padding 10px
+
 ul
   list-style none
   padding-left 0px
@@ -25,8 +28,16 @@ button
   line-height 32px
   background-color primary-color
 
+input
+  height 35px
+  font-size 16px
+  padding-left 7px
+  box-sizing border-box
+  border 1px solid #E7E7E7
+
 input:focus
   outline none
+  box-sizing border-box
   border 1px solid primary-color
 
 .loader
@@ -35,24 +46,93 @@ input:focus
   display block
   margin 0 auto
 
+.login
+  float right
+  display inline-block
+
+.login-box
+  top -160px
+  left 0px
+  right 0px
+  z-index 1
+  margin auto
+  height 150px
+  position fixed
+  max-width 450px
+  min-width 320px
+  border-top none
+  background-color #FFF
+  border 1px solid #DBDBDB
+  border-top none
+
+  &.show-login-box
+    top 0px
+
+  a.login-with-fb
+    color #FFF
+    width 270px
+    height 40px
+    margin auto
+    display block
+    font-size 15px
+    margin-top 50px
+    padding-left 10px
+    line-height 38px
+    position relative
+    text-align center
+    text-transform uppercase
+    background-color #3B5998
+
+    img
+      top 8px
+      left 22px
+      height 25px
+      position absolute
+
 #menu
+  display inline-block
+
   ul
+    margin 0px
+
     li
       display inline
 
       a
         padding 7px
 
+.login-signup
+  width 250px
+  margin 0 auto
+
+  input
+    width 100%
+    border none
+    margin 5px 0px
+
+    &:focus
+      border-bottom 2px solid primary-color
+
+  button
+    width 100%
+    margin-top 20px
+
 .md-wrap
   width 600px
   margin 0 auto
 
+.list-title
+  text-align center
+
+.list-container
+  margin auto
+  max-width 850px
 
 .list-item
   width 100%
-  padding 4px
-  margin-bottom 2px
+  padding 10px
   box-sizing border-box
+  border-bottom 1px solid #F7F7F7
 
   &:hover
     background-color #F5F5F5
@@ -62,11 +142,11 @@ input:focus
     display inline-block
 
   .rank
-    width 50px
+    width 65px
     font-size 2em
-    margin-top 15px
     text-align center
     vertical-align top
+    margin 15px 5px 0px 0px
 
   .cover
     width 50px
@@ -76,7 +156,7 @@ input:focus
       width 100%
 
   .info
-    width 77%
+    width 72%
     cursor pointer
     margin-left 12px
     vertical-align top
@@ -89,6 +169,12 @@ input:focus
       font-size 11px
       margin-top 3px
       font-weight 300
+
+  .vote-div
+    float right
+    > div
+      vertical-align top
+      display inline-block
 
   .votes
     .vote-count
@@ -113,6 +199,17 @@ input:focus
     border-bottom 13px solid #b8b8b8
     border-left 10px solid transparent
     border-right 10px solid transparent
+
+.add-new-item
+  overflow hidden
+  margin 20px 0px
+
+.add-item
+  button
+    float right
+
+.add-to-list
+  float right
 
 .notify-box
   top 0
@@ -199,6 +296,17 @@ input:focus
         cursor pointer
         position absolute
         transform translateY(-50%)
+
+#veil
+  top 0px
+  left 0px
+  right 0px
+  bottom 0px
+  width 100%
+  opacity(80)
+  height 100%
+  position fixed
+  background-color #FFF
 
 
 @import 'directives'
