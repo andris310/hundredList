@@ -1,0 +1,7 @@
+{
+	"mongoAppDb"        : {
+		"host" : "localhost",
+		"db"   : "hundred_best",
+    "port" : "27017"
+	}
+}

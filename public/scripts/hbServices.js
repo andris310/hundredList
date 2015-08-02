@@ -14,3 +14,9 @@ angular.module('hbServices', ['ngResource'])
     searchAmBooks: { method: 'GET', url: '/api/searchAmBooks', isArray: true }
   });
 }])
+
+.factory('userSvc', ['$resource', function($resource) {
+  return $resource('/api', {}, {
+    getInfo: { method: 'GET', url: '/api/getInfo' }
+  });
+}])

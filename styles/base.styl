@@ -187,18 +187,21 @@ input:focus
   .upvote
     padding 15px 2px
 
+    .arrow-up
+      width 0
+      height 0
+      border-bottom 13px solid #b8b8b8
+      border-left 10px solid transparent
+      border-right 10px solid transparent
+
+      &.upvoted
+        border-bottom 13px solid primary-color
+
     &:hover
       cursor pointer
 
       .arrow-up
-        border-bottom 13px solid green
-
-  .arrow-up
-    width 0
-    height 0
-    border-bottom 13px solid #b8b8b8
-    border-left 10px solid transparent
-    border-right 10px solid transparent
+        border-bottom 13px solid darken(primary-color, 10)
 
 .add-new-item
   overflow hidden

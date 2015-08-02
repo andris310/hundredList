@@ -62,7 +62,7 @@ function upvote(params, callback) {
     }
 
     var type = item.itemType ? item.itemType : 'item';
-    var vote = new Vote({userId: params.userId, itemId: item._id});
+    var vote = new Vote({userId: params.userId, itemId: item._id, listId: params.listId});
     vote.save(function(err, vote) {
       if (err) {
         var error = HBError.process(err);

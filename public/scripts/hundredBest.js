@@ -78,19 +78,25 @@ angular.module('hundredBest', [
   };
 }])
 
-.controller('listCtl', ['$scope', '$routeParams', '$location', 'listSvc', function($scope, $routeParams, $location, listSvc) {
+.controller('listCtl', ['$scope', '$routeParams', '$location', 'listSvc', 'userSvc', function($scope, $routeParams, $location, listSvc, userSvc) {
   console.log('inside listCtl');
   $scope.selectedList = list;
   $scope.selectedItem = {};
   $scope.newItem = {};
+  $scope.userVotes = {};
   $scope.openAddItem = false;
 
   console.log($scope.selectedList);
   $scope.itemType = $scope.selectedList.items[0].itemType;
 
-  $scope.getUserVotes = function() {
-    userSvc.getUserVotes
+  var infoPayload = {
+    listId: $scope.selectedList._id
   };
+
+  userSvc.getInfo(infoPayload, function(res) {
+    $scope.userVotes = res.votes;
+    console.log('user: ', res);
+  });
 
   $scope.addItemToList = function() {
     var payload = {
@@ -122,7 +128,8 @@ angular.module('hundredBest', [
   $scope.upvote = function(item) {
     console.log(item);
     var payload = {
-      itemId: item._id
+      itemId: item._id,
+      listId: $scope.selectedList._id
     };
 
     listSvc.upvote(payload, function(res) {

@@ -188,18 +188,21 @@ input:focus {
 .list-item .upvote {
   padding: 15px 2px;
 }
-.list-item .upvote:hover {
-  cursor: pointer;
-}
-.list-item .upvote:hover .arrow-up {
-  border-bottom: 13px solid #008000;
-}
-.list-item .arrow-up {
+.list-item .upvote .arrow-up {
   width: 0;
   height: 0;
   border-bottom: 13px solid #b8b8b8;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
+}
+.list-item .upvote .arrow-up.upvoted {
+  border-bottom: 13px solid #63beff;
+}
+.list-item .upvote:hover {
+  cursor: pointer;
+}
+.list-item .upvote:hover .arrow-up {
+  border-bottom: 13px solid #30a9ff;
 }
 .add-new-item {
   overflow: hidden;

@@ -6,6 +6,7 @@ require('../hb_modules/connection').db();
 
 var itemCtl = require('../controllers/item-controller');
 var listCtl = require('../controllers/list-controller');
+var voteCtl = require('../controllers/vote-controller');
 var searchCtl = require('../controllers/search-controller');
 
 router.get('/', function(req, res) {
@@ -108,6 +109,27 @@ router.post('/upvote', function(req, res) {
     }
 
     res.json(result);
+  });
+});
+
+router.get('/getInfo', function(req, res) {
+  if (!req.user) {
+    return;
+  }
+
+  var payload = {
+    userId: req.user._id,
+    listId: req.query.listId
+  };
+
+  console.log('PAYLOAD: ', payload);
+  voteCtl.getUserVotesForList(payload, function(err, votes) {
+    if (err) {
+      console.log(err);
+      res.send(err);
+      return;
+    }
+    res.json({userId: req.user._id, votes: votes});
   });
 });
 

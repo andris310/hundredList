@@ -14,9 +14,9 @@
         data-show-faces="true")
     .vote-div
       .votes
-        span(title='Votes').vote-count {{item.votes.length}}
+        span(title='Votes').vote-count
       .upvote(ng-click='upvote(item)')
-        //- .arrow-up(ng-class='{upvoted: false}')
+        .arrow-up(class='{{!!(userVotes | filter: item._id).length ? "upvoted" : ""}}')
 
   .add-new-item
     button(ng-hide='openAddItem', ng-click='openAddItem = openAddItem ? false : true').add-to-list &#65291; Add To List
