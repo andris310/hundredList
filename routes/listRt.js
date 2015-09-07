@@ -11,10 +11,10 @@ router.get('/all-lists', function(req, res) {
 });
 
 router.get('/new-list', function(req, res) {
-  console.log('req inside create-list:', req.isAuthenticated());
-  if (!req.user) {
+  if (!req.isAdmin()) {
     res.redirect(307, '/');
   }
+
   res.render('list/new_list', {
     title: 'Create New List',
     alias: 'new_list'

@@ -10,13 +10,21 @@ angular.module('hundredBest', [
   $locationProvider.html5Mode(true);
 }])
 
-.controller('mainCtl', ['$scope', '$timeout', 'listSvc', 'searchSvc', function($scope, $timeout, listSvc, searchSvc) {
+.run(['$anchorScroll', function($anchorScroll) {
+  $anchorScroll.yOffset = 60;   // always scroll by 50 extra pixels
+}])
+
+.controller('mainCtl', ['$scope', '$timeout', '$location', '$anchorScroll', 'listSvc', 'searchSvc', function($scope, $timeout, $location, $anchorScroll, listSvc, searchSvc) {
   $scope.title = 'Hundred Best';
   $scope.showVeil = false;
   $scope.selectedList = '';
   $scope.notifications = [];
   $scope.showLogin = false;
 
+  $scope.hideVeil = function() {
+    $scope.showLogin = false;
+    $scope.showVeil = false;
+  };
     /**
    * Global function for displaying notification.
    * type - The message type. [error, warn, info, success] class for notification styles.
@@ -66,6 +74,12 @@ angular.module('hundredBest', [
     }
   }
 
+  $scope.scrollTo = function(id) {
+    $location.hash(id);
+    $anchorScroll();
+    $location.hash('');
+  };
+
   $scope.safeApply = function(fn) {
     var phase = this.$root.$$phase;
     if(phase == '$apply' || phase == '$digest') {
@@ -87,16 +101,30 @@ angular.module('hundredBest', [
   $scope.openAddItem = false;
 
   console.log($scope.selectedList);
-  $scope.itemType = $scope.selectedList.items[0].itemType;
+  $scope.itemType = $scope.selectedList.items.length ? $scope.selectedList.items[0].itemType : '';
+  getUserVotes();
 
-  var infoPayload = {
-    listId: $scope.selectedList._id
+  function getUserVotes() {
+    userSvc.getInfo({listId: $scope.selectedList._id}, function(res) {
+      $scope.userVotes = res.votes;
+      console.log('user: ', res);
+    });
+  }
+
+  $scope.toggleComments = function(item, event) {
+    var targetElem = angular.element(event.target);
+    var loader = targetElem.children('.loading-comments');
+
+    if (!item.showComments) {
+      loader.addClass('loading');
+    }
+
+    item.showComments = item.showComments ? false : true;
+    FB.XFBML.parse(event.target);
+    targetElem.find('.fb-comments iframe').load(function() {
+      loader.removeClass('loading');
+    });
   };
-
-  userSvc.getInfo(infoPayload, function(res) {
-    $scope.userVotes = res.votes;
-    console.log('user: ', res);
-  });
 
   $scope.addItemToList = function() {
     var payload = {
@@ -109,19 +137,36 @@ angular.module('hundredBest', [
       listId: $scope.selectedList._id,
       itemType: $scope.selectedItem.itemType
     };
+    console.log('selectedItem: ', $scope.selectedItem);
+    listSvc.checkListForItem({listId: $scope.selectedList._id, itemTitle: $scope.selectedItem.title}, function(res) {
+      console.log('checkListForItem RES: ', res);
+      if (res.listHasItem) {
+        $scope.notify('info', 'This ' + res.item.itemType + ' already exists in this list!');
+        $scope.openAddItem = false;
+        $scope.selectedItem = {};
+        setTimeout(function() {
+          // $scope.scrollTo(res.item._id);
+          $('html,body').animate({scrollTop: $('#' + res.item._id).offset().top - 65});
+        }, 100);
 
-    listSvc.addItemToList(payload, function(res) {
-      $scope.openAddItem = false;
-      $scope.newItem = {};
-      $scope.selectedItem = {};
-      $scope.getListInfo();
-    }, function(err) {
-      if (err.data && err.data.msg) {
-        $scope.notify('warn', err.data.msg);
         return;
       }
-      console.log('ERROR: ', err);
-      $scope.notify('error', 'Sorry, there was an issue while adding to the list.');
+
+      listSvc.addItemToList(payload, function(res) {
+        $scope.openAddItem = false;
+        $scope.newItem = {};
+        $scope.selectedItem = {};
+        $scope.getListInfo();
+      }, function(err) {
+        if (err.data && err.data.msg) {
+          $scope.notify('warn', err.data.msg);
+          return;
+        }
+        console.log('ERROR: ', err);
+        $scope.notify('error', 'Sorry, there was an issue while adding to the list.');
+      });
+    }, function(err) {
+      console.log('checkListForItem ERROR: ', err);
     });
   };
 
@@ -154,6 +199,7 @@ angular.module('hundredBest', [
 
     listSvc.getListInfo(payload, function(list) {
       $scope.selectedList = list;
+      getUserVotes();
     });
   };
 }])

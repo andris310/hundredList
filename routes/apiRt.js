@@ -9,14 +9,9 @@ var listCtl = require('../controllers/list-controller');
 var voteCtl = require('../controllers/vote-controller');
 var searchCtl = require('../controllers/search-controller');
 
-router.get('/', function(req, res) {
-  res.json({ message: 'hooray! welcome to our api!' });
-});
-
 // Crete new List
 router.post('/create-list', function(req, res) {
-  console.log('req inside create-list:', req);
-  if (!req.user) {
+  if (!req.isAdmin()) {
     res.redirect(307, '/');
   }
   var list = new List();
@@ -35,15 +30,29 @@ router.post('/create-list', function(req, res) {
   });
 });
 
+router.post('/checkListForItem', function(req, res) {
+  console.log('req.body: ', req.body)
+  listCtl.checkListForItem(req.body.listId, req.body.itemTitle, function(err, result) {
+    if (err) {
+      console.log('api ERR: ', err.status);
+      err.status ? res.status(err.status) : res.status(500);
+      res.send(err);
+      return;
+    }
+
+    res.json(result);
+  });
+});
+
 // Crete new item
 router.post('/add-item', function(req, res) {
-  if (!req.user) {
+  if (!req.isAuthenticated()) {
     res.status(401);
-    res.send({msg: 'You have to be logged in.'})
+    res.send({msg: 'You have to be logged in.'});
     return;
   }
 
-  itemCtl.createNewItem(req.body, function(err, result) {
+  itemCtl.addItemToList(req.body, function(err, result) {
     if (err) {
       console.log('api ERR: ', err.status);
       err.status ? res.status(err.status) : res.status(500);
@@ -92,7 +101,7 @@ router.get('/searchAmBooks', function(req, res) {
 });
 
 router.post('/upvote', function(req, res) {
-  if (!req.user) {
+  if (!req.isAuthenticated()) {
     res.status(401);
     res.send({msg: 'You have to log-in to upvote'});
     return;
@@ -113,7 +122,7 @@ router.post('/upvote', function(req, res) {
 });
 
 router.get('/getInfo', function(req, res) {
-  if (!req.user) {
+  if (!req.isAuthenticated()) {
     return;
   }
 
@@ -122,10 +131,8 @@ router.get('/getInfo', function(req, res) {
     listId: req.query.listId
   };
 
-  console.log('PAYLOAD: ', payload);
   voteCtl.getUserVotesForList(payload, function(err, votes) {
     if (err) {
-      console.log(err);
       res.send(err);
       return;
     }

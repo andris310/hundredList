@@ -62,7 +62,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use(function(req, res, next) {
   if (req.session && req.session.passport.user) {
     User.findOne({ _id: req.session.passport.user }, function(err, user) {
-      console.log('found USER: ', user)
+      // console.log('found USER: ', user)
       if (user) {
         req.user = user;
         delete req.user.local.password; // delete the password from the session
@@ -88,7 +88,11 @@ app.use('/api', apiRt);
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
-  next(err);
+  res.render('status/404', {
+    alias: 'status',
+    url: req.url
+  });
+  return;
 });
 
 // error handlers

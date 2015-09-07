@@ -1,26 +1,33 @@
-.list-container(ng-cloak)
-  h1.list-title list title
-  //- h1.list-title {{selectedList.name}}
-  .list-item(ng-repeat='item in selectedList.items | orderBy: "-votes.length"', ng-show='item.title')
+//- h1.list-title list title
+h1.list-title {{selectedList.name}}
+.list-container(ng-cloak, ng-hide='openAddItem')
+  .list-item(id='{{item._id}}', ng-repeat='item in selectedList.items | orderBy: "-votes.length"', ng-show='item.title')
     .rank {{$index + 1}}
     .cover
       img(ng-src='{{item.smallImage}}')
     .info
       a(ng-href='{{item.detailPageUrl}}', target='_blank').title {{item.title}}
       .author by {{item.author}}
-      div(class="fb-like"
-        data-share="true"
-        data-width="450"
-        data-show-faces="true")
+      //- div(class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/{{item._id}}",  data-layout="icon_link")
+      span(class="fb-comments-count", data-href="http://developers.facebook.com/docs/plugins/comments/{{item._id}}")
+      .item-comments(ng-click='toggleComments(item, $event)') Comments
+        span(class='caret', ng-class='{"open-caret": item.showComments}')
+        span.loading-comments
+        .comment-block(ng-show='item.showComments')
+          div(class="fb-comments" data-href="http://developers.facebook.com/docs/plugins/comments/{{item._id}}", fb-xfbml-state="rendered", data-numposts="5")
     .vote-div
       .votes
-        span(title='Votes').vote-count
+        span(title='Votes').vote-count {{item.votes.length}}
       .upvote(ng-click='upvote(item)')
         .arrow-up(class='{{!!(userVotes | filter: item._id).length ? "upvoted" : ""}}')
 
   .add-new-item
-    button(ng-hide='openAddItem', ng-click='openAddItem = openAddItem ? false : true').add-to-list &#65291; Add To List
+    button(ng-click='openAddItem = openAddItem ? false : true').add-to-list &#65291; Add To List
 
-  .add-item(ng-show='openAddItem').md-wrap
-    am-search(list='selectedList', new-item='selectedItem')
-    button(ng-show='selectedItem.title', ng-click='addItemToList()') &#65291; Add {{itemType}}
+  .comment-block
+    div(class="fb-comments" data-href="http://developers.facebook.com/docs/plugins/comments/{{selectedList.name}}" data-numposts="5")
+
+.add-item(ng-show='openAddItem').md-wrap
+  am-search(list='selectedList', new-item='selectedItem')
+  button(ng-show='selectedItem.title', ng-click='addItemToList()') &#65291; Add {{itemType}}
+  a.back-btn(href='#', ng-click='openAddItem = false') Back to List

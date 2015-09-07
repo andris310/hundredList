@@ -5,16 +5,16 @@ var passport = require('passport');
 
 require('../hb_modules/connection').db();
 
-router.get('/signup', function(req, res) {
-  res.render('register', {
-    title: 'Sign Up'
-  });
-});
+// router.get('/signup', function(req, res) {
+//   res.render('register', {
+//     title: 'Sign Up'
+//   });
+// });
 
-router.post('/signup', passport.authenticate('local-signup', {
-  successRedirect : '/', // redirect to the secure profile section
-  failureRedirect : '/signup' // redirect back to the signup page if there is an error
-}));
+// router.post('/signup', passport.authenticate('local-signup', {
+//   successRedirect : '/', // redirect to the secure profile section
+//   failureRedirect : '/signup' // redirect back to the signup page if there is an error
+// }));
 
 // router.post('/register', function(req, res) {
 //   User.register(new User({username : req.body.username }), req.body.password, function(err, user) {

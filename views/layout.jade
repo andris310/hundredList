@@ -9,22 +9,6 @@ html(lang="en" ng-app='hundredBest')
     link(href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900' rel='stylesheet' type='text/css')
 
   body(ng-controller='mainCtl', ng-cloak)
-    script.
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : process.env.FB_APP_ID,
-          xfbml      : true,
-          version    : 'v2.3'
-        });
-      };
-
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "//connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
     div#fb-root
     .notify-box
       .notifications
@@ -36,12 +20,13 @@ html(lang="en" ng-app='hundredBest')
       .login-box(ng-class='{"show-login-box": showLogin}')
         a(href="/auth/facebook", target='_self').login-with-fb Login with Facebook
           img(src='/images/faceb.svg')
+        p We do not collect information from your profile.
       if (!user)
         .login
           a(href='', ng-click='showLogin = !showLogin; showVeil = true') Login
       if (user)
         .login
-          span #{user.username}
+          span #{user.facebook.name.split(' ')[0]} &nbsp;
           a(href="/logout", target='_self') Logout
 
       //- #logo Hundred Best Lists
@@ -56,7 +41,7 @@ html(lang="en" ng-app='hundredBest')
     #container.wrap(ng-controller=ctl)
       block content
       //- div User: #{user}
-    #veil(ng-if='showVeil')
+    #veil(ng-if='showVeil', ng-click='hideVeil()')
 
   block scripts
     script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
@@ -73,4 +58,19 @@ html(lang="en" ng-app='hundredBest')
       if (window.location.hash && window.location.hash == '#_=_') {
           window.location.hash = '';
       }
+    script.
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '#{process.env.FB_APP_ID}',
+          xfbml      : false,
+          version    : 'v2.3'
+        });
+      };
 
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));

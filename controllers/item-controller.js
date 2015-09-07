@@ -1,3 +1,4 @@
+var async = require('async');
 var Item = require('../models/itemMdl');
 var List = require('../models/listMdl');
 var Vote = require('../models/voteMdl');
@@ -8,7 +9,7 @@ require('../hb_modules/connection').db();
 
 exports.upvote = upvote;
 exports.getAllItems = getAllItems;
-exports.createNewItem = createNewItem;
+exports.addItemToList = addItemToList;
 
 function getAllItems(callback) {
   Item.find(function(err, items) {
@@ -20,37 +21,84 @@ function getAllItems(callback) {
   });
 }
 
-function createNewItem(params, callback) {
-  console.log('params: ', params)
-  var item = new Item({
-    title: params.title,
-    author: params.author,
-    detailPageUrl: params.detailPageUrl,
-    isbn: params.isbn,
-    largeImage: params.largeImage,
-    smallImage: params.smallImage,
-    itemType: params.itemType
-  });
+function addItemToList(params, callback) {
+  var item;
+  console.log('&&&& params: ', params);
 
   var list;
+  async.series({
+    findList: function(seriesCb) {
+      console.log('findList...')
+      List.findOne({_id: params.listId}, function(err, res) {
+        if (err) {
+          return seriesCb(HBError.process(err));
+        }
+        console.log('******** LIST *******', res)
+        list = res;
+        seriesCb();
+      });
+    },
 
-  List.findOne({_id: params.listId}, function(err, res) {
-    if (err) {
-      return callback(HBError.process(err));
-    }
+    checkExistingItems: function(seriesCb) {
+      Item.findOne({title: params.title}, function(err, result) {
+        if (err) {
+          return seriesCb(err);
+        }
 
-    list = res;
-    item.save(function(err, item) {
-      if (err) {
-        var error = HBError.process(err);
-        return callback(error);
+        console.log('item found: ', result);
+        item = result;
+        seriesCb();
+      });
+    },
+
+    createItemIfNeeded: function(seriesCb) {
+      console.log('addItemToList...');
+      console.log('item: ', item)
+      if (!item) {
+        item = new Item({
+          title: params.title,
+          author: params.author,
+          detailPageUrl: params.detailPageUrl,
+          isbn: params.isbn,
+          largeImage: params.largeImage,
+          smallImage: params.smallImage,
+          itemType: params.itemType
+        });
+
+        item.save(function(err, item) {
+          console.log('item.save')
+          if (err) {
+            console.log('+++++', err);
+            var error = HBError.process(err);
+            return seriesCb(error);
+          }
+
+          return seriesCb();
+        });
+      } else {
+        seriesCb();
       }
+    },
+
+    addItemToList: function(seriesCb) {
+      // if (existingItem._id) {
+      //   console.log('Item exists in this list');
+      //   var err = new Error('This item already exists.')
+      //   err.status = 409;
+      //   return seriesCb(err);
+      // }
 
       list.items.push(item);
       list.save(function(err, res) {
-        callback(null, {message: 'Item Added to the list'});
+        if (err) {
+          return seriesCb(err);
+        }
+
+        seriesCb();
       });
-    });
+    }
+  }, function(err) {
+    callback(null, {message: 'Item Added to the list'});
   });
 }
 
@@ -74,12 +122,17 @@ function upvote(params, callback) {
       }
 
       item.votes.push(vote);
-      item.save(function(err, res) {
+      item.save(function(err, itemObj) {
         if (err) {
           return callback(err);
         }
+        console.log('upvote: ', itemObj);
+        var data = {
+          message: 'Vote added to the ' + itemObj.title,
+          item: itemObj
+        };
 
-        callback(null, {message: 'Vote added to the ' + type});
+        callback(null, data);
       });
     });
   });
