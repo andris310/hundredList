@@ -10,10 +10,7 @@ var voteCtl = require('../controllers/vote-controller');
 var searchCtl = require('../controllers/search-controller');
 
 // Crete new List
-router.post('/create-list', function(req, res) {
-  if (!req.isAdmin()) {
-    res.redirect(307, '/');
-  }
+router.post('/create-list', isAdmin, function(req, res) {
   var list = new List();
 
   list.name = req.body.name;
@@ -139,5 +136,13 @@ router.get('/getInfo', function(req, res) {
     res.json({userId: req.user._id, votes: votes});
   });
 });
+
+function isAdmin(req, res, next) {
+    if (req.user.local && req.user.local.emial)
+        return next();
+
+    // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
+    res.redirect('/');
+}
 
 module.exports = router;

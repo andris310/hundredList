@@ -10,10 +10,7 @@ router.get('/all-lists', function(req, res) {
   });
 });
 
-router.get('/new-list', function(req, res) {
-  if (!req.isAdmin()) {
-    res.redirect(307, '/');
-  }
+router.get('/new-list', isAdmin, function(req, res) {
 
   res.render('list/new_list', {
     title: 'Create New List',
@@ -30,5 +27,13 @@ router.get('/list/:list_url', function(req, res) {
     });
   });
 });
+
+function isAdmin(req, res, next) {
+  console.log('USR: ', req.user.local);
+  if (req.user.local && req.user.local.email)
+    return next();
+
+  res.redirect('/');
+}
 
 module.exports = router;
