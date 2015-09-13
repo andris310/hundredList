@@ -101,7 +101,11 @@ angular.module('hundredBest', [
   $scope.openAddItem = false;
 
   console.log($scope.selectedList);
-  $scope.itemType = $scope.selectedList.items.length ? $scope.selectedList.items[0].itemType : '';
+
+  if ($scope.selectedList) {
+    $scope.itemType = $scope.selectedList.items.length ? $scope.selectedList.items[0].itemType : '';
+  }
+
   getUserVotes();
 
   function getUserVotes() {
