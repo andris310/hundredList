@@ -109,10 +109,12 @@ angular.module('hundredBest', [
   getUserVotes();
 
   function getUserVotes() {
-    userSvc.getInfo({listId: $scope.selectedList._id}, function(res) {
-      $scope.userVotes = res.votes;
-      console.log('user: ', res);
-    });
+    if ($scope.selectedList) {
+      userSvc.getInfo({listId: $scope.selectedList._id}, function(res) {
+        $scope.userVotes = res.votes;
+        console.log('user: ', res);
+      });
+    }
   }
 
   $scope.toggleComments = function(item, event) {
