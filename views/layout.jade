@@ -26,7 +26,8 @@ html(lang="en" ng-app='hundredBest')
           a(href='', ng-click='showLogin = !showLogin; showVeil = true') Login
       if (user)
         .login
-          span #{user.facebook.name.split(' ')[0]} &nbsp;
+          if user.facebook && user.facebook.name
+            span #{user.facebook.name.split(' ')[0]} &nbsp;
           a(href="/logout", target='_self') Logout
 
       //- #logo Hundred Best Lists
