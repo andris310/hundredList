@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var List = require('../models/listMdl');
+var adminAuth = require('../hb_modules/adminAuth');
 require('../hb_modules/connection').db();
 
 router.get('/all-lists', function(req, res) {
@@ -10,8 +11,7 @@ router.get('/all-lists', function(req, res) {
   });
 });
 
-router.get('/new-list', isAdmin, function(req, res) {
-
+router.get('/new-list', adminAuth.isAdmin, function(req, res) {
   res.render('list/new_list', {
     title: 'Create New List',
     alias: 'new_list'
@@ -29,7 +29,6 @@ router.get('/list/:list_url', function(req, res) {
 });
 
 function isAdmin(req, res, next) {
-  console.log('USR: ', req.user.local);
   if (req.user.local && req.user.local.email)
     return next();
 

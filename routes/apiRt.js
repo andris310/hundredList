@@ -8,9 +8,10 @@ var itemCtl = require('../controllers/item-controller');
 var listCtl = require('../controllers/list-controller');
 var voteCtl = require('../controllers/vote-controller');
 var searchCtl = require('../controllers/search-controller');
+var adminAuth = require('../hb_modules/adminAuth');
 
 // Crete new List
-router.post('/create-list', isAdmin, function(req, res) {
+router.post('/create-list', adminAuth.isAdmin, function(req, res) {
   var list = new List();
 
   list.name = req.body.name;
@@ -136,13 +137,5 @@ router.get('/getInfo', function(req, res) {
     res.json({userId: req.user._id, votes: votes});
   });
 });
-
-function isAdmin(req, res, next) {
-    if (req.user.local && req.user.local.emial)
-        return next();
-
-    // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
-    res.redirect('/');
-}
 
 module.exports = router;
