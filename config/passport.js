@@ -99,7 +99,7 @@ module.exports = function(passport) {
     // pull in our app id and secret from our auth.js file
     clientID: process.env.FB_APP_ID,
     clientSecret: process.env.FB_APP_SECRET,
-    callbackURL: 'http://localhost:3000/auth/facebook/callback'
+    callbackURL: process.env.FB_CALLBACK_PATH + '/auth/facebook/callback'
   },function(token, refreshToken, profile, done) {
     console.log('using FB login')
     // asynchronous

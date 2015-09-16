@@ -5,7 +5,7 @@ require('../hb_modules/connection').db();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  List.findOne({url: 'hundr'}).populate('items').exec(function(err, result) {
+  List.findOne({url: process.env.HOME_PAGE_LIST}).populate('items').exec(function(err, result) {
     if (err) {
       res.status(500);
       res.send(err);
