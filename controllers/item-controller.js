@@ -81,13 +81,6 @@ function addItemToList(params, callback) {
     },
 
     addItemToList: function(seriesCb) {
-      // if (existingItem._id) {
-      //   console.log('Item exists in this list');
-      //   var err = new Error('This item already exists.')
-      //   err.status = 409;
-      //   return seriesCb(err);
-      // }
-
       list.items.push(item);
       list.save(function(err, res) {
         if (err) {
@@ -122,6 +115,7 @@ function upvote(params, callback) {
       }
 
       item.votes.push(vote);
+      item.voteCount = item.votes.length;
       item.save(function(err, itemObj) {
         if (err) {
           return callback(err);

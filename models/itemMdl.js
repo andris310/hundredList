@@ -27,6 +27,9 @@ var itemSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Vote'
   }],
+  voteCount: {
+    type: Number
+  },
   itemType: {
     type: String,
     required: true

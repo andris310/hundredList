@@ -1,16 +1,17 @@
 var express = require('express');
 var router = express.Router();
-var List = require('../models/listMdl');
+var listCtl = require('../controllers/list-controller');
 require('../hb_modules/connection').db();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  List.findOne({url: process.env.HOME_PAGE_LIST}).populate('items').exec(function(err, result) {
+  listCtl.getHomePageList(function(err, result) {
     if (err) {
       res.status(500);
       res.send(err);
     }
 
+    console.log('RESULT: ', result)
     res.render('home', {
       title: 'Best Hundred',
       ctl: 'listCtl',

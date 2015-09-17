@@ -6,6 +6,7 @@ require('../hb_modules/connection').db();
 
 exports.getAllLists = getAllLists;
 exports.getListInfo = getListInfo;
+exports.getHomePageList = getHomePageList;
 exports.checkListForItem = checkListForItem;
 
 function getAllLists(callback) {
@@ -19,7 +20,17 @@ function getAllLists(callback) {
 }
 
 function getListInfo(listId, callback) {
-  List.findOne({_id: listId}).populate('items').exec(function(err, result) {
+  List.findOne({_id: listId}).populate({path: 'items', options: { sort: { 'voteCount': -1 } } }).exec(function(err, result) {
+    if (err) {
+      return callback(err);
+    }
+
+    callback(null, result);
+  });
+}
+
+function getHomePageList(callback) {
+  List.findOne({url: process.env.HOME_PAGE_LIST}).populate({path: 'items', options: { sort: { 'voteCount': -1 } } }).exec(function(err, result) {
     if (err) {
       return callback(err);
     }
