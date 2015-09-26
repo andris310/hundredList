@@ -44,6 +44,10 @@ function checkListForItem(listId, itemTitle, callback) {
   var list;
   var listHasItem = false;
   console.log('itemTitle: ', itemTitle);
+  if (itemTitle && !itemTitle.length) {
+    return callback();
+  }
+
   async.series({
     findList: function(seriesCb) {
       console.log('findList...')

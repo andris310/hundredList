@@ -40,12 +40,13 @@ function addItemToList(params, callback) {
     },
 
     checkExistingItems: function(seriesCb) {
+      console.log("PARAMS: ", params)
       Item.findOne({title: params.title}, function(err, result) {
         if (err) {
           return seriesCb(err);
         }
 
-        console.log('item found: ', result);
+        console.log('**** *** item found: ', result);
         item = result;
         seriesCb();
       });
@@ -62,7 +63,8 @@ function addItemToList(params, callback) {
           isbn: params.isbn,
           largeImage: params.largeImage,
           smallImage: params.smallImage,
-          itemType: params.itemType
+          itemType: params.itemType,
+          voteCount: 0
         });
 
         item.save(function(err, item) {

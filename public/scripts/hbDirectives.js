@@ -1,17 +1,26 @@
 angular.module('hbDirectives', ['hbServices'])
 
-.directive('amSearch', ['searchSvc', function(searchSvc) {
+.directive('amSearch', ['searchSvc', '$timeout', function(searchSvc, $timeout) {
   return{
     restrict: 'E',
     templateUrl: '/directives/am-search',
     replace: true,
     scope: {
       list: '=',
-      newItem: '='
+      newItem: '=',
+      focusFlag: '='
     },
     link: function(scope, element, attr, ctrl) {
       scope.searching = false;
       scope.searchResults = [];
+
+      scope.$watch('focusFlag', function(value) {
+        if (value) {
+          $timeout(function() {
+            element.find('input').focus();
+          }, 10);
+        }
+      })
 
       scope.searchAmBooks = function() {
         scope.searching = true;
@@ -24,13 +33,11 @@ angular.module('hbDirectives', ['hbServices'])
             scope.searching = false;
           }, function(err) {
             scope.searching = false;
-            console.log('ERR: ', err);
           });
         }
       };
 
       scope.setSelectedItem = function(item) {
-        console.log('element', element);
         console.log('set selected item: ', item)
         scope.newItem = item;
         scope.searchParam = '';

@@ -24,6 +24,8 @@ html(lang="en" ng-app='hundredBest')
           a(href="/auth/facebook", target='_self').login-with-fb Login with Facebook
             img(src='/images/faceb.svg')
           p We do not collect information from your profile.
+
+
         if (!user)
           .login
             a(href='', ng-click='showLogin = !showLogin; showVeil = true') Login
@@ -33,18 +35,12 @@ html(lang="en" ng-app='hundredBest')
               span #{user.facebook.name.split(' ')[0]} &nbsp;
             a(href="/logout", target='_self') Logout
 
-      //- #logo Hundred Best Lists
-      //- #menu
-      //-   ul
-      //-     li
-      //-       a(href='/', target='_self') Home
-      //-     li
-      //-       a(href='/', target='_self') list
-      //-     li
-      //-       a(href='/all-lists', target='_self') All lists
+        .add-new-item
+          a(href='#', ng-hide='controls.openAddItem', ng-click='controls.openAddItem = controls.openAddItem ? false : true').add-to-list &#65291; Add to List
+          a(href='#', ng-show='controls.openAddItem', ng-click='controls.openAddItem = false').back-to-list Back to List
+
     #container.wrap(ng-controller=ctl)
       block content
-      //- div User: #{user}
     #veil(ng-if='showVeil', ng-click='hideVeil()')
 
   block scripts

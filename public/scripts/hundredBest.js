@@ -21,6 +21,9 @@ angular.module('hundredBest', [
   $scope.notifications = [];
   $scope.showLogin = false;
   $scope.selectedList = list;
+  $scope.controls = {
+    openAddItem: false
+  };
 
   $scope.hideVeil = function() {
     $scope.showLogin = false;
@@ -73,7 +76,7 @@ angular.module('hundredBest', [
       $scope.notifications.splice(noteIdx, 1);
       $scope.safeApply();
     }
-  }
+  };
 
   $scope.scrollTo = function(id) {
     $location.hash(id);
@@ -98,7 +101,6 @@ angular.module('hundredBest', [
   $scope.selectedItem = {};
   $scope.newItem = {};
   $scope.userVotes = {};
-  $scope.openAddItem = false;
 
   console.log($scope.selectedList);
 
@@ -148,7 +150,7 @@ angular.module('hundredBest', [
       console.log('checkListForItem RES: ', res);
       if (res.listHasItem) {
         $scope.notify('info', 'This ' + res.item.itemType + ' already exists in this list!');
-        $scope.openAddItem = false;
+        $scope.controls.openAddItem = false;
         $scope.selectedItem = {};
         setTimeout(function() {
           // $scope.scrollTo(res.item._id);
@@ -159,7 +161,7 @@ angular.module('hundredBest', [
       }
 
       listSvc.addItemToList(payload, function(res) {
-        $scope.openAddItem = false;
+        $scope.controls.openAddItem = false;
         $scope.newItem = {};
         $scope.selectedItem = {};
         $scope.getListInfo();
@@ -205,6 +207,7 @@ angular.module('hundredBest', [
 
     listSvc.getListInfo(payload, function(list) {
       $scope.selectedList = list;
+      console.log(list)
       getUserVotes();
     });
   };
