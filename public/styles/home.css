@@ -6,8 +6,28 @@ html {
 .ng-cloak {
   display: none !important;
 }
+body {
+  margin: 0px;
+  color: #3e4044;
+}
+.wrap {
+  margin: auto;
+  max-width: 850px;
+}
 .header {
+  z-index: 1;
+  width: 100%;
   padding: 10px;
+  position: fixed;
+  background-color: #fff;
+  box-sizing: border-box;
+  -webkit-box-shadow: 0px 1px 7px 0px rgba(195,195,195,0.36);
+  -moz-box-shadow: 0px 1px 7px 0px rgba(195,195,195,0.36);
+  box-shadow: 0px 1px 7px 0px rgba(195,195,195,0.36);
+}
+.header .list-title {
+  margin: 5px;
+  display: inline-block;
 }
 ul {
   list-style: none;
@@ -43,6 +63,9 @@ input:focus {
   box-sizing: border-box;
   border: 1px solid #63beff;
 }
+#container {
+  padding-top: 80px;
+}
 .loader {
   width: 40px;
   filter: 'alpha(opacity=20)';
@@ -54,6 +77,7 @@ input:focus {
 }
 .login {
   float: right;
+  margin-top: 15px;
   display: inline-block;
 }
 .login-box {
@@ -132,12 +156,8 @@ input:focus {
   width: 600px;
   margin: 0 auto;
 }
-.list-title {
-  text-align: center;
-}
 .list-container {
   margin: auto;
-  max-width: 850px;
 }
 .list-container .comment-block {
   text-align: center;

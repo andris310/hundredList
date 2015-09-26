@@ -1,5 +1,4 @@
 //- h1.list-title list title
-h1.list-title {{selectedList.name}}
 .list-container(ng-cloak, ng-hide='openAddItem')
   .list-item(id='{{item._id}}', ng-repeat='item in selectedList.items', ng-show='item.title')
     .rank {{$index + 1}}

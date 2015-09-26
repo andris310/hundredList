@@ -20,6 +20,7 @@ angular.module('hundredBest', [
   $scope.selectedList = '';
   $scope.notifications = [];
   $scope.showLogin = false;
+  $scope.selectedList = list;
 
   $scope.hideVeil = function() {
     $scope.showLogin = false;
@@ -94,7 +95,6 @@ angular.module('hundredBest', [
 
 .controller('listCtl', ['$scope', '$routeParams', '$location', 'listSvc', 'userSvc', function($scope, $routeParams, $location, listSvc, userSvc) {
   console.log('inside listCtl');
-  $scope.selectedList = list;
   $scope.selectedItem = {};
   $scope.newItem = {};
   $scope.userVotes = {};
