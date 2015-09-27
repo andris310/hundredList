@@ -26,17 +26,36 @@ function searchAmBooks(searchParam, callback) {
 function processAmBooks(books) {
   var processed = [];
   for(var i = 0; i < books.length; i++) {
-    var processedBook = {};
+    var processedBook = {
+      title: '',
+      author: '',
+      smallImage: '',
+      largeImage: '',
+      detailPageUrl: '',
+      isbn: '',
+      itemType: 'book'
+    };
     var book = removeArray(books[i]);
 
-    processedBook.title = book.ItemAttributes.Title;
-    processedBook.author = book.ItemAttributes.Author;
-    processedBook.smallImage = book.SmallImage.URL;
-    processedBook.largeImage = book.LargeImage.URL;
-    processedBook.detailPageUrl = book.DetailPageURL;
-    processedBook.itemType = 'book';
+    if (book) {
+      if (book.ItemAttributes) {
+        processedBook.title = book.ItemAttributes.Title;
+        processedBook.author = book.ItemAttributes.Author;
+        processedBook.isbn = book.ItemAttributes.ISBN || book.ItemAttributes.EISBN
+      }
 
-    processedBook.isbn = book.ItemAttributes.ISBN || book.ItemAttributes.EISBN
+      if (book.SmallImage) {
+        processedBook.smallImage = book.SmallImage.URL;
+      }
+
+      if (book.LargeImage) {
+        processedBook.largeImage = book.LargeImage.URL;
+      }
+
+      if (book.DetailPageURL) {
+        processedBook.detailPageUrl = book.DetailPageURL;
+      }
+    }
 
     processed.push(processedBook);
   }

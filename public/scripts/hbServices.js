@@ -5,6 +5,7 @@ angular.module('hbServices', ['ngResource'])
     upvote: { method: 'POST', url: '/api/upvote' },
     addItemToList: { method: 'POST', url: '/api/add-item' },
     getListInfo: { method: 'POST', url: '/api/getListInfo' },
+    getHomePageList: { method: 'POST', url: '/api/getHomePageList' },
     getAllLists: { method: 'POST', url: '/api/getAllLists', isArray: true },
     checkListForItem: { method: 'POST', url: '/api/checkListForItem' }
   });

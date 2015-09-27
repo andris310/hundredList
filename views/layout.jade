@@ -19,12 +19,12 @@ html(lang="en" ng-app='hundredBest')
 
     header.header
       .wrap
-        h1.list-title {{selectedList.name}}
+        h1.list-title(ng-show='selectedList') {{selectedList.name}}
+        h1.list-title(ng-hide='selectedList') oi
         .login-box(ng-class='{"show-login-box": showLogin}')
           a(href="/auth/facebook", target='_self').login-with-fb Login with Facebook
             img(src='/images/faceb.svg')
           p We do not collect information from your profile.
-
 
         if (!user)
           .login
@@ -35,7 +35,7 @@ html(lang="en" ng-app='hundredBest')
               span #{user.facebook.name.split(' ')[0]} &nbsp;
             a(href="/logout", target='_self') Logout
 
-        .add-new-item
+        .add-new-item(ng-if='selectedList.name')
           a(href='#', ng-hide='controls.openAddItem', ng-click='controls.openAddItem = controls.openAddItem ? false : true').add-to-list &#65291; Add to List
           a(href='#', ng-show='controls.openAddItem', ng-click='controls.openAddItem = false').back-to-list Back to List
 
@@ -53,7 +53,8 @@ html(lang="en" ng-app='hundredBest')
     script(src='/scripts/hundredBest.js')
     script(src='/scripts/hbServices.js')
     script(src='/scripts/hbDirectives.js')
-    script(src='/scripts/#{alias}.js')
+    if (alias)
+      script(src='/scripts/#{alias}.js')
     script.
       if (window.location.hash && window.location.hash == '#_=_') {
           window.location.hash = '';

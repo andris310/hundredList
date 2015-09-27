@@ -14,13 +14,18 @@ angular.module('hundredBest', [
   $anchorScroll.yOffset = 60;   // always scroll by 50 extra pixels
 }])
 
-.controller('mainCtl', ['$scope', '$timeout', '$location', '$anchorScroll', 'listSvc', 'searchSvc', function($scope, $timeout, $location, $anchorScroll, listSvc, searchSvc) {
+.controller('mainCtl', ['$scope', '$timeout', '$location', '$anchorScroll', 'userSvc', 'listSvc', 'searchSvc', function($scope, $timeout, $location, $anchorScroll, userSvc, listSvc, searchSvc) {
   $scope.title = 'Hundred Best';
   $scope.showVeil = false;
   $scope.selectedList = '';
   $scope.notifications = [];
+  $scope.userVotes = {};
   $scope.showLogin = false;
-  $scope.selectedList = list;
+  if ($location.path() === '/') {
+    $scope.selectedList = listSvc.getHomePageList(function() {
+      $scope.afterGotList();
+    });
+  }
   $scope.controls = {
     openAddItem: false
   };
@@ -28,6 +33,32 @@ angular.module('hundredBest', [
   $scope.hideVeil = function() {
     $scope.showLogin = false;
     $scope.showVeil = false;
+  };
+
+  $scope.getListInfo = function() {
+    var payload = {
+      listId: $scope.selectedList._id
+    };
+
+    listSvc.getListInfo(payload, function(list) {
+      $scope.selectedList = list;
+      console.log(list)
+      $scope.afterGotList();
+    });
+  };
+
+  $scope.afterGotList = function() {
+    if ($scope.selectedList && $scope.selectedList._id) {
+      $scope.itemType = $scope.selectedList.items.length ? $scope.selectedList.items[0].itemType : '';
+      $scope.getUserVotes();
+    }
+  };
+
+  $scope.getUserVotes = function() {
+    userSvc.getInfo({listId: $scope.selectedList._id}, function(res) {
+      $scope.userVotes = res.votes;
+      console.log('user: ', res);
+    });
   };
     /**
    * Global function for displaying notification.
@@ -100,24 +131,8 @@ angular.module('hundredBest', [
   console.log('inside listCtl');
   $scope.selectedItem = {};
   $scope.newItem = {};
-  $scope.userVotes = {};
 
   console.log($scope.selectedList);
-
-  if ($scope.selectedList) {
-    $scope.itemType = $scope.selectedList.items.length ? $scope.selectedList.items[0].itemType : '';
-  }
-
-  getUserVotes();
-
-  function getUserVotes() {
-    if ($scope.selectedList) {
-      userSvc.getInfo({listId: $scope.selectedList._id}, function(res) {
-        $scope.userVotes = res.votes;
-        console.log('user: ', res);
-      });
-    }
-  }
 
   $scope.toggleComments = function(item, event) {
     var targetElem = angular.element(event.target);
@@ -197,18 +212,6 @@ angular.module('hundredBest', [
         return;
       }
       $scope.notify('error', 'Sorry, something went wrong.');
-    });
-  };
-
-  $scope.getListInfo = function() {
-    var payload = {
-      listId: $scope.selectedList._id
-    };
-
-    listSvc.getListInfo(payload, function(list) {
-      $scope.selectedList = list;
-      console.log(list)
-      getUserVotes();
     });
   };
 }])

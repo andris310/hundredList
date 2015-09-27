@@ -62,6 +62,17 @@ router.post('/add-item', function(req, res) {
   });
 });
 
+router.post('/getHomePageList', function(req, res) {
+  listCtl.getHomePageList(function(err, result) {
+    if (err) {
+      res.status(500);
+      res.send(err);
+      return;
+    }
+    res.json(result);
+  });
+});
+
 router.post('/getListInfo', function(req, res) {
   listCtl.getListInfo(req.body.listId, function(err, result) {
     if (err) {

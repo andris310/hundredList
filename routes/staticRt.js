@@ -16,7 +16,7 @@ router.get('/', function(req, res) {
       title: 'Best Hundred',
       ctl: 'listCtl',
       alias: 'home',
-      list: result
+      listId: result
     });
   });
 });
