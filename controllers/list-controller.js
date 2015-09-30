@@ -43,19 +43,17 @@ function checkListForItem(listId, itemTitle, callback) {
   var item;
   var list;
   var listHasItem = false;
-  console.log('itemTitle: ', itemTitle);
+
   if (itemTitle && !itemTitle.length) {
     return callback();
   }
 
   async.series({
     findList: function(seriesCb) {
-      console.log('findList...')
       List.findOne({_id: listId}, function(err, res) {
         if (err) {
           return seriesCb(HBError.process(err));
         }
-        console.log('******** LIST *******', res)
         list = res;
         seriesCb();
       });
@@ -67,7 +65,6 @@ function checkListForItem(listId, itemTitle, callback) {
           return seriesCb(err);
         }
 
-        console.log('item found: ', result);
         item = result;
         seriesCb();
       });
@@ -92,7 +89,6 @@ function checkListForItem(listId, itemTitle, callback) {
       return callback(err);
     }
 
-    console.log('item: ', item);
     var data = {
       listHasItem: listHasItem,
       item: null
@@ -101,7 +97,6 @@ function checkListForItem(listId, itemTitle, callback) {
     if (listHasItem) {
       data.item = item;
     }
-    console.log('RETURN DATA: ', data);
     callback(null, data);
   });
 }

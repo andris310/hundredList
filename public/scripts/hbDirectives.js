@@ -26,9 +26,7 @@ angular.module('hbDirectives', ['hbServices'])
         scope.searching = true;
         scope.newItem = {};
         if (scope.searchParam) {
-          console.log(scope.searchParam);
           searchSvc.searchAmBooks({searchParam: scope.searchParam}, function(res) {
-            console.log('RESULT: ', res);
             scope.searchResults = res;
             scope.searching = false;
           }, function(err) {
@@ -38,7 +36,6 @@ angular.module('hbDirectives', ['hbServices'])
       };
 
       scope.setSelectedItem = function(item) {
-        console.log('set selected item: ', item)
         scope.newItem = item;
         scope.searchParam = '';
         scope.searchResults = [];
