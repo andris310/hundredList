@@ -197,7 +197,6 @@ angular.module('hundredBest', [
   };
 
   $scope.upvote = function(item) {
-    console.log(item);
     var payload = {
       itemId: item._id,
       listId: $scope.selectedList._id
@@ -207,7 +206,7 @@ angular.module('hundredBest', [
       if (res.message) {
         $scope.notify('info', res.message);
       }
-      console.log('Upvote res: ', res);
+
       $scope.getListInfo();
     }, function(err) {
       if (err.data && err.data.msg) {

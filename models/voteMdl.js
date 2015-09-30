@@ -18,10 +18,4 @@ var voteSchema = new Schema({
 
 voteSchema.index({userId: 1, itemId: 1}, {unique: true});
 
-voteSchema.on('index', function(err) {
-  if (err) {
-    console.log('err', err);
-  }
-});
-
 module.exports = mongoose.model('Vote', voteSchema);

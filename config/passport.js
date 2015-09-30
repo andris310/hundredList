@@ -22,7 +22,6 @@ module.exports = function(passport) {
     passwordField : 'password',
     passReqToCallback : true // allows us to pass back the entire request to the callback
   }, function(req, email, password, done) {
-    console.log('req:', req);
     // asynchronous
     // User.findOne wont fire unless data is sent back
     process.nextTick(function() {
@@ -101,7 +100,6 @@ module.exports = function(passport) {
     clientSecret: process.env.FB_APP_SECRET,
     callbackURL: process.env.FB_CALLBACK_PATH + '/auth/facebook/callback'
   },function(token, refreshToken, profile, done) {
-    console.log('using FB login')
     // asynchronous
     process.nextTick(function() {
       // find the user in the database based on their facebook id
