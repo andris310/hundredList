@@ -14,9 +14,10 @@ angular.module('hundredBest', [
   $anchorScroll.yOffset = 60;   // always scroll by 50 extra pixels
 }])
 
-.controller('mainCtl', ['$scope', '$timeout', '$location', '$anchorScroll', 'userSvc', 'listSvc', 'searchSvc', function($scope, $timeout, $location, $anchorScroll, userSvc, listSvc, searchSvc) {
+.controller('mainCtl', ['$scope', '$timeout', '$location', '$window', '$anchorScroll', 'userSvc', 'listSvc', 'searchSvc', function($scope, $timeout, $location, $window, $anchorScroll, userSvc, listSvc, searchSvc) {
   $scope.title = 'Hundred Best';
   $scope.showVeil = false;
+  $scope.fbLoaded = $window.fbLoaded;
   $scope.selectedList = '';
   $scope.notifications = [];
   $scope.userVotes = {};
@@ -26,6 +27,7 @@ angular.module('hundredBest', [
       $scope.afterGotList();
     });
   }
+
   $scope.controls = {
     openAddItem: false
   };
@@ -42,22 +44,27 @@ angular.module('hundredBest', [
 
     listSvc.getListInfo(payload, function(list) {
       $scope.selectedList = list;
-      console.log(list)
       $scope.afterGotList();
     });
   };
+
+  angular.element("#fb-root").bind("facebook:init", function() {
+    var target = angular.element('#' + $scope.selectedList._id);
+    FB.XFBML.parse(target[0]);
+    target.find('.fb-comments iframe').load();
+  });
 
   $scope.afterGotList = function() {
     if ($scope.selectedList && $scope.selectedList._id) {
       $scope.itemType = $scope.selectedList.items.length ? $scope.selectedList.items[0].itemType : '';
       $scope.getUserVotes();
+      $scope.safeApply();
     }
   };
 
   $scope.getUserVotes = function() {
     userSvc.getInfo({listId: $scope.selectedList._id}, function(res) {
       $scope.userVotes = res.votes;
-      console.log('user: ', res);
     });
   };
     /**
@@ -128,11 +135,8 @@ angular.module('hundredBest', [
 }])
 
 .controller('listCtl', ['$scope', '$routeParams', '$location', 'listSvc', 'userSvc', function($scope, $routeParams, $location, listSvc, userSvc) {
-  console.log('inside listCtl');
   $scope.selectedItem = {};
   $scope.newItem = {};
-
-  console.log($scope.selectedList);
 
   $scope.toggleComments = function(item, event) {
     var targetElem = angular.element(event.target);
@@ -160,9 +164,8 @@ angular.module('hundredBest', [
       listId: $scope.selectedList._id,
       itemType: $scope.selectedItem.itemType
     };
-    console.log('selectedItem: ', $scope.selectedItem);
+
     listSvc.checkListForItem({listId: $scope.selectedList._id, itemTitle: $scope.selectedItem.title}, function(res) {
-      console.log('checkListForItem RES: ', res);
       if (res.listHasItem) {
         $scope.notify('info', 'This ' + res.item.itemType + ' already exists in this list!');
         $scope.controls.openAddItem = false;
@@ -185,7 +188,7 @@ angular.module('hundredBest', [
           $scope.notify('warn', err.data.msg);
           return;
         }
-        console.log('ERROR: ', err);
+
         $scope.notify('error', 'Sorry, there was an issue while adding to the list.');
       });
     }, function(err) {

@@ -4,7 +4,7 @@ var List = require('../models/listMdl');
 var adminAuth = require('../hb_modules/adminAuth');
 require('../hb_modules/connection').db();
 
-router.get('/all-lists', function(req, res) {
+router.get('/all-lists', adminAuth.isAdmin, function(req, res) {
   res.render('list/lists', {
     title: 'All lists',
     alias: 'lists'

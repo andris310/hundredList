@@ -5,30 +5,30 @@ var passport = require('passport');
 
 require('../hb_modules/connection').db();
 
-router.get('/signup', function(req, res) {
-  res.render('register', {
-    title: 'Sign Up'
-  });
-});
+// router.get('/signup', function(req, res) {
+//   res.render('register', {
+//     title: 'Sign Up'
+//   });
+// });
 
-router.post('/signup', passport.authenticate('local-signup', {
-  successRedirect : '/', // redirect to the secure profile section
-  failureRedirect : '/signup' // redirect back to the signup page if there is an error
-}));
+// router.post('/signup', adminAuth.isAdmin, passport.authenticate('local-signup', {
+//   successRedirect : '/', // redirect to the secure profile section
+//   failureRedirect : '/signup' // redirect back to the signup page if there is an error
+// }));
 
-router.post('/register', function(req, res) {
-  User.register(new User({username : req.body.username }), req.body.password, function(err, user) {
-    if (err) {
-      return res.render('register', {
-        info: 'Sorry. That username already exists. Try again.'
-      });
-    }
+// router.post('/register', function(req, res) {
+//   User.register(new User({username : req.body.username }), req.body.password, function(err, user) {
+//     if (err) {
+//       return res.render('register', {
+//         info: 'Sorry. That username already exists. Try again.'
+//       });
+//     }
 
-    passport.authenticate('local')(req, res, function() {
-      res.redirect('/');
-    });
-  });
-});
+//     passport.authenticate('local')(req, res, function() {
+//       res.redirect('/');
+//     });
+//   });
+// });
 
 router.get('/login', function(req, res) {
   res.render('login', {

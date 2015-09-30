@@ -5,7 +5,10 @@ html
 
 [ng\:cloak]
 [ng-cloak]
+[data-ng-cloak]
+[x-ng-cloak]
 .ng-cloak
+.x-ng-cloak
   display none !important
 
 body
@@ -170,8 +173,6 @@ input:focus
 .list-container
   margin auto
 
-  .comment-block
-    text-align center
 
   .item-comments
     cursor pointer
@@ -182,6 +183,12 @@ input:focus
   .add-new-item
     margin-bottom 50px
     border 2px solid primary-color
+
+.comment-block
+  text-align center
+
+.list-comments
+  padding-top 50px
 
 .caret
   cursor pointer

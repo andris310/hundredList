@@ -13,18 +13,19 @@
         span(class='caret', ng-class='{"open-caret": item.showComments}')
         span.loading-comments
         .comment-block(ng-show='item.showComments')
-          div(class="fb-comments" data-href="http://developers.facebook.com/docs/plugins/comments/{{item._id}}", fb-xfbml-state="rendered", data-numposts="5")
+          div(class="fb-comments", data-href="http://developers.facebook.com/docs/plugins/comments/{{item._id}}", fb-xfbml-state="rendered", data-numposts="5")
     .vote-div
       .votes
         span(title='Votes').vote-count {{item.voteCount}}
       .upvote(ng-click='upvote(item)')
         .arrow-up(class='{{!!(userVotes | filter: item._id).length ? "upvoted" : ""}}')
 
-  .comment-block(ng-if='selectedList._id')
-    div(class="fb-comments" data-href="http://developers.facebook.com/docs/plugins/comments/{{selectedList._id}}", fb-xfbml-state="rendered", data-numposts="5") Comments
-
   .add-new-item
     a(href='#', ng-hide='controls.openAddItem', ng-click='controls.openAddItem = controls.openAddItem ? false : true').add-to-list &#65291; Add to List
+
+  .list-comments
+    .comment-block(ng-show='selectedList._id', ng-attr-id='{{selectedList._id}}')
+      div(class="fb-comments", data-href="http://developers.facebook.com/docs/plugins/comments/{{selectedList._id}}", fb-xfbml-state="rendered", data-numposts="5") Comments
 
 .add-item(ng-show='controls.openAddItem').md-wrap
   am-search(list='selectedList', new-item='selectedItem', focus-flag='controls.openAddItem')

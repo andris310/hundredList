@@ -1,5 +1,5 @@
 doctype html
-html(lang="en" ng-app='hundredBest')
+html(lang="en", ng-app='hundredBest', class='ng-cloak')
   head
     base(href='/')
     title {{title}}
@@ -20,7 +20,7 @@ html(lang="en" ng-app='hundredBest')
     header.header
       .wrap
         h1.list-title(ng-show='selectedList') {{selectedList.name}}
-        h1.list-title(ng-hide='selectedList') oi
+        h1.list-title(ng-hide='selectedList')= title
         .login-box(ng-class='{"show-login-box": showLogin}')
           a(href="/auth/facebook", target='_self').login-with-fb Login with Facebook
             img(src='/images/faceb.svg')
@@ -64,8 +64,9 @@ html(lang="en" ng-app='hundredBest')
         FB.init({
           appId      : '#{process.env.FB_APP_ID}',
           xfbml      : false,
-          version    : 'v2.3'
+          version    : 'v2.4'
         });
+        jQuery('#fb-root').trigger('facebook:init');
       };
 
       (function(d, s, id){

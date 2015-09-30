@@ -3,7 +3,10 @@ html {
 }
 [ng:cloak],
 [ng-cloak],
-.ng-cloak {
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
   display: none !important;
 }
 body {
@@ -171,9 +174,6 @@ input:focus {
 .list-container {
   margin: auto;
 }
-.list-container .comment-block {
-  text-align: center;
-}
 .list-container .item-comments {
   cursor: pointer;
   font-size: 0.8em;
@@ -183,6 +183,12 @@ input:focus {
 .list-container .add-new-item {
   margin-bottom: 50px;
   border: 2px solid #63beff;
+}
+.comment-block {
+  text-align: center;
+}
+.list-comments {
+  padding-top: 50px;
 }
 .caret {
   cursor: pointer;

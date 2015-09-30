@@ -20,7 +20,7 @@ angular.module('hbDirectives', ['hbServices'])
             element.find('input').focus();
           }, 10);
         }
-      })
+      });
 
       scope.searchAmBooks = function() {
         scope.searching = true;
