@@ -24,6 +24,7 @@ angular.module('hundredBest', [
   $scope.showLogin = false;
   if ($location.path() === '/') {
     $scope.selectedList = listSvc.getHomePageList(function() {
+      console.log('loaded home list')
       $scope.afterGotList();
     });
   }
@@ -50,6 +51,7 @@ angular.module('hundredBest', [
 
   angular.element("#fb-root").bind("facebook:init", function() {
     var target = angular.element('#' + $scope.selectedList._id);
+    console.log('parsing FB comments....')
     FB.XFBML.parse(target[0]);
     target.find('.fb-comments iframe').load();
   });
