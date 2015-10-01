@@ -49,14 +49,14 @@ angular.module('hundredBest', [
     });
   };
 
-  angular.element("#fb-root").bind("facebook:init", function() {
-    var target = angular.element('#' + $scope.selectedList._id);
-    console.log('parsing FB comments....')
-    FB.XFBML.parse(target[0]);
-    target.find('.fb-comments iframe').load();
-  });
-
   $scope.afterGotList = function() {
+    angular.element("#fb-root").bind("facebook:init", function() {
+      var target = angular.element('#' + $scope.selectedList._id);
+      console.log('parsing FB comments....')
+      FB.XFBML.parse(target[0]);
+      target.find('.fb-comments iframe').load();
+    });
+
     if ($scope.selectedList && $scope.selectedList._id) {
       $scope.itemType = $scope.selectedList.items.length ? $scope.selectedList.items[0].itemType : '';
       $scope.getUserVotes();
