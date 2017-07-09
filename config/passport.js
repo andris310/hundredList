@@ -87,6 +87,7 @@ module.exports = function(passport) {
       }
       // all is well, return successful user
       req.session.user = user;
+      delete req.session.user.password;
       return done(null, user);
     });
   }));
